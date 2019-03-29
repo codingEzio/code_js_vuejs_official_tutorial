@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Binding Inline Styles</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <p :style="{ color: highlightColor, fontSize: fontSize + 'em'}">
+      The 'fontSize' will be eventually trans to `font-size` (hoo..).
+    </p>
+
+    <p :style="styleObjectInData">
+      <!-- It'll be much cleaner if we put this into the `data` seg. -->
+      Ah, this is fun!
+    </p>
+
+    <p style="color:hotpink"
+       :style="[ baseStyles, addtionalStyles ]">
+      Hello from "array syntax".
+    </p>
+
+    <p style="color:tomato"
+       :style="{ fontSize: fontSize + 'em'}"
+       :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">
+      Hello from "prefixed values".
+    </p>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+        // 1st example
+        highlightColor: '#094ebc',
+        fontSize: 1.5,
+
+        // 2nd example
+        styleObjectInData: {
+          color: '#b50a0a',
+          fontSize: 1.5,
+          fontFamily: 'Verdana',
+        },
+
+        // 3rd example
+        baseStyles: {
+          fontFamily: 'Verdana',
+        },
+        addtionalStyles: {
+          fontStyle: 'italic',
+        },
+      }
+    });
+
+  </script>
+</body>
+
+</html>

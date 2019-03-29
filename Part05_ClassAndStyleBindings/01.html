@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Binding HTML Classes</title>
+</head>
+<body>
+  <div id="app-1">
+    <p class="static"
+       :class="{ active: isActive, 'text-danger': hasError }">
+      <!-- 
+        You CAN have multiple `classes` by having more fields in here.
+        
+        For the values ( inside {..} ),
+          active    KEY   vals of class
+          isActive  VAL   whether the key enables or not 
+       -->
+       classObjectInHTML
+    </p>
+    <p class="static"
+       :class="classObjectInData">
+      <!-- 
+        1. KEY in HTML, VAL in data   (classname | bool-vals)
+        2. NAH in HTML, ALL in data   (classname , bool-vals)
+       -->
+      classObjectInData
+    </p>
+    <p class="static"
+       :class="classObjectInComputed">
+      classObjectInComputed
+    </p>
+    <p class="static"
+       :class="[activeInArray, hasErrorInArray]">
+      <!-- 
+        Just like puting the classes directly (no ':' & '[,]')
+        it HAS some conditions of course, I havn't try it yet.
+       -->
+      classObjectArray
+    </p>
+  </div>
+
+  <div id="app-2">
+    <p>
+      <!-- Original -->
+      <my-component></my-component>
+
+      <!-- Append classes -->
+      <my-component class="third fourth">
+      </my-component>
+      
+      <!-- Append classes with conditions -->
+      <my-component :class="{ active: isActive }">
+      </my-component>
+    </p>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: "#app-1",
+      data: {
+        isActive: true,
+        hasError: false,  // This could used to indicate the REAL errors!
+      
+        classObjectInData: {
+          active: true,
+          'text-danger': false,
+        },
+
+        activeInArray: 'active',
+        hasErrorInArray: 'text-danger',
+      },
+      computed: {
+        classObjectInComputed: function() {
+          return {
+            active: this.isActive && !this.error,
+            'text-danger': this.error && this.error.type === 'fatal'
+          }
+        }
+      }
+    });
+
+    Vue.component('my-component', {
+      template: '<p class="first second">Hello from \'my-component\'</p>'
+    });
+
+    var vm2 = new Vue({
+      el: "#app-2",
+      data: {
+        isActive: true,
+        hasError: false,
+      },
+    });
+    
+  </script>
+</body>
+</html>
