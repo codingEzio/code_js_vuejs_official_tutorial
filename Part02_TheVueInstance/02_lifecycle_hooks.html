@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Lifecycle Hooks</title>
+</head>
+<body>
+  <script>
+    /*
+      Nice links for this
+      1. https://assist-software.net/blog/how-use-vue-instance-lifecycle-hooks
+      2. https://www.vertica.no/blogg/2018/vuejs-lifecycle-hooks-the-layman-s-overview/
+    */
+    
+    new Vue({
+      data: {
+        a: 1
+      },
+      beforeCreate: function() {
+        console.log("Hi, I'm `beforeCreate`");
+      },
+      created: function() {
+        console.log("a is: " + this.a);
+      }
+    })
+  </script>
+</body>
+</html>

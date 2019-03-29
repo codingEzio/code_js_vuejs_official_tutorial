@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>The Vue Instance</title>
+</head>
+<body>
+
+  <div id="example">
+    <p>Hello</p>
+  </div>
+
+  <script>
+    // -------------------------------------
+
+    var data = {
+      name: "Alex",
+      age: 30,
+    }
+
+    // Okay, there're two vars ARE "reactive". That means 
+    //  if you change it here   (`data.ATTR`) affects `vm.ATTR`
+    //  if you change it there  (`vm.ATTR`)   affects `data.ATTR`
+    var vm = new Vue({
+      el: "#example",
+
+      // It won't be "reactive" if it doesn't exist when init_ing.
+      // For example, `vm.profile = VAL` !!=> `data.profile` 
+      data: data
+    })
+
+    console.log(vm.name == data.name);
+
+    data.name = "xleA"; // => vm.data == "xleA"
+    vm.name = "Alex"; // => data.name == "Alex" (re-assign)
+
+    console.log(vm.name == data.name);
+
+    // -------------------------------------
+
+    // Vue's properties & user-defined ones
+    console.log(vm.$data == data);
+    console.log(vm.$el === document.getElementById("example"));
+  </script>
+</body>
+</html>
