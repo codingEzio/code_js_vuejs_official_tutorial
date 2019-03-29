@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Computed Properties</title>
+</head>
+
+<body>
+
+  <div id="example-computed-and-methods">
+    <p>Original: {{ message }}</p>
+    <p>
+      `computed` : <br>
+      &nbsp;&nbsp;reversed => {{ reversedMessage }} <br>
+      &nbsp;&nbsp;uppercased => {{ uppercasedMessage }} <br>
+      &nbsp;&nbsp;fullName => {{ fullName }} <br>
+    </p><p>
+      `methods` : <br>
+      &nbsp;&nbsp;time_now => {{ now() }} <br>
+    </p>
+  </div>
+
+  <div id="example-computed-setter-getter">
+    <p>
+      <!-- Interact this in the "Chrome DevTools" -->
+      <!-- 
+          >> vm2.fullName == "Foo Bar"  // OK
+          >> vm2.fullName = "A B C D"   // computed : .. : set
+          >> vm2.fullName == "A D"      // OK
+       -->
+    </p>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: "#example-computed-and-methods",
+      data: {
+        message: "youtube",
+
+        fname: "Foo",
+        lname: "Bar",
+      },
+      computed: {
+        // In cmp to `methods`, 
+        //  these methods will be cached based on their reactive deps.
+        //  It'll return instantly as long as its dep havn't changed.
+        reversedMessage: function() {
+          return this.message.split("").reverse().join("");
+        },
+        uppercasedMessage: function() {
+          return this.message.toUpperCase();
+        },
+        fullName: function () {
+          return this.fname + ' ' + this.lname
+        }
+      },
+      methods: {
+        // Invoke these methods by its name with a `()`.
+        // Plus, it'll always re-render the content (fuck caching).
+        now: function() {
+          // In cases where you do not want caching, use a method instead.
+          return Date(Date.now());
+        }
+      }
+    })
+
+    var vm2 = new Vue({
+      el: "#example-computed-setter-getter",
+      data: {
+        firstName: "Foo",
+        lastName: "Bar",
+      },
+      computed: {
+        fullName: {
+          // Same as returning this directly (no `get`)
+          get: function() {
+            return this.firstName + ' ' + this.lastName;
+          },
+          // We kinda could do some post-processing, huh?
+          set: function(newValue) {
+            var names = newValue.split(' '); 
+            this.firstName = names[0];
+            this.lastName =  names[names.length - 1]; // A B C => C
+          }
+        }
+      }
+    });
+
+  </script>
+</body>
+
+</html>
