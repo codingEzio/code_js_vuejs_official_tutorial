@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Vue</title>
+</head>
+<body>
+  <div id="app">
+    {{ message }}
+  </div>
+
+  <div id="app-2">
+    <span v-bind:title="message" 
+          v-bind:style="stylish">
+      Hover this msg.
+    </span>
+  </div>
+
+  <div id="app-3">
+    <!--
+      The `seen` here does NOT matter.
+      The `v-if` renders the el based on the truthy-ness of the expr val.
+    -->
+    <span v-if="first_visible">
+      Now you see me!
+    </span>
+    <span v-if="second_not_visible">
+      Now you don't!
+    </span>
+  </div>
+
+  <div id="app-4">
+    <ol>
+      <li v-for="todo in todos">
+        {{ todo.text }}
+      </li>
+    </ol>
+  </div>
+
+  <div id="app-5">
+    <p>
+      {{ message }} &nbsp;&nbsp;
+      <button @click="reverseMessage">
+        Reverse that!
+      </button>
+    </p>
+  </div>
+
+  <div id="app-6">
+    <p>
+      {{ message }} &nbsp;&nbsp;
+      <!-- 
+        Varies based on
+          -> value of form inputs element 
+          <- output of components 
+      -->
+      <input v-model="message" />
+    </p>
+  </div>
+
+  <div id="app-7">
+    <ol>
+      <app-7 
+        v-for="inst in frameworkList"
+        v-bind:item="inst"
+        v-bind:key="inst.id">
+        <!-- 1. Iterations (RIGHT) -->
+        <!-- 2. Vals from parent => vals in child (component) -->
+      </app-7>
+    </ol>
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: "#app",
+      data: {
+        message: "Hello Vue!"
+      }
+    })
+
+    var app2 = new Vue({
+      el: "#app-2",
+      data: {
+        // Pour these data into the HTML elements
+        message: "You loaded this on " + new Date().toLocaleString(),
+        stylish: "color:blue"
+      }
+    })
+
+    var app3 = new Vue({
+      el: "#app-3",
+      data: {
+        first_visible: true,
+        second_not_visible: false,
+      }
+    })
+
+    var app4 = new Vue({
+      el: "#app-4",
+      data: {
+        // todo.text <= v-for="todo in todos"
+        todos: [
+          // app4.todos.push({ text: "New TODOs" })
+          { text: "Learn Vue" },
+          { text: "Learn React" },
+          { text: "Learn Angular" },
+        ]
+      }
+    })
+
+    var app5 = new Vue({
+      el: "#app-5",
+      data: {
+        message: "12345"
+      },
+      methods: {
+        reverseMessage: function () {
+          this.message = this.message.split('').reverse().join('');
+        }
+      }
+    })
+
+    var app6 = new Vue({
+      el: "#app-6",
+      data: {
+        message: "Hello Vue!"
+      }
+    })
+
+    // The 'Vue Component' is NOT the same as "custom elements".
+    // Here's the difference
+    //  - The "custom el" is NOT natively implemented in EVERY browser.
+    //  - As for 'Vue', it depends on Vue itself (which sup IE9 & else).
+    Vue.component("app-7", {
+      // item <= inst in frameworkList
+      props: ["item"],
+      template: "<li>{{ item.text }}</li>"
+    });
+
+    var app7 = new Vue({
+      el: "#app-7",
+      data: {
+        frameworkList: [
+          { id: 0, text: "Vue" },
+          { id: 1, text: "React" },
+          { id: 2, text: "Angular" },
+        ]
+      }
+    })
+  </script>
+</body>
+</html>
