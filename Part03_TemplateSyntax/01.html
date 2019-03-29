@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Template Syntax</title>
+</head>
+<body>
+  <div id="app-tmpl-syntax">
+    <p>
+      <span v-once>This msg won't change: {{ imt_msg }} </span>
+    </p>
+    
+    <p>Using mustaches: {{ rawHtml }}</p>
+    <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+
+    <p>
+      Mustaches for text, v-bind:ATTR="VAL" for tags. &nbsp;&nbsp;
+      <button v-bind:disabled="disThisBtnOrNot">You can't click me.</button>
+    </p>
+
+    <p>
+      {{ imt_msg * 10 }} &nbsp;
+      {{ imt_msg ? "YES" : "NO" }} &nbsp;
+      {{ imt_msg.toString() + " (I'm String!)" }}
+    </p>
+  </div>
+
+  <div id="app-directives">
+    <p v-if="seen">Hey, I'm `v-if`.</p>
+
+    <a :href="url" :title="title">Open Google</a>
+
+    <p @click="sayHi">Click me to "say" Hi</p>
+  </div>
+
+  <script>
+    new Vue({
+      el: "#app-tmpl-syntax",
+      data: {
+        imt_msg: 1,
+        rawHtml: "<span style='color: blue'>blue</span>",
+        disThisBtnOrNot: true,
+      },
+    })
+
+    new Vue({
+      el: "#app-directives",
+      data: {
+        seen: true,
+        url: "https://google.com",
+        title: "Access Google"
+      },
+      methods: {
+        sayHi: function() {
+          alert("Hi!!");
+        }
+      }
+    })
+  </script>
+</body>
+</html>

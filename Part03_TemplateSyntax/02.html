@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Template Syntax</title>
+</head>
+<body>
+  <div id="app-dynamicAttr">
+    <p>
+      <a v-bind:[attrHerf]="url" v-bind:[attrTitle]="title">
+        Yeah baby
+      </a>
+    </p>
+
+    <p>
+      {{ model_msg.toUpperCase() }} &nbsp;&nbsp;
+
+      <!--
+        The `.trim` was called "modifiers".
+        It's mostly used by `v-model` and `v-on` (hm).
+
+        https://vuejs.org/v2/guide/events.html#Event-Modifiers
+        https://vuejs.org/v2/guide/forms.html#Modifiers
+      -->
+      <input v-model.trim="model_msg" />
+    </p>
+  </div>
+
+  <script>
+    var vm = new Vue({
+      el: "#app-dynamicAttr",
+      data: {
+        attrherf: "href",   // Browsers will coerce attribute names into lowercase,
+        attrtitle: "title", // that is, `attrHerf`'ll conv to `attrherf` (ah)
+        url: "https://google.com",
+        title: "Access Google",
+
+        model_msg: "Hello Vue!",
+      },
+    })
+  </script>
+</body>
+</html>
