@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>01</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div id="example1">
+      <!-- 
+        This example itself was called 
+        "listen to the DOM events (e.g. click) and run some JS code".
+       
+        The `.once` is a "event modifier".
+        which makes the event to that elem'll be ONLY trig ONCE.
+        -->
+      <button @click.once="counter += 1">Add 1</button>
+      <p>
+        The button has been click the {{ counter }} times.
+      </p>
+    </div>
+
+    <div id="example2">
+      <button @click="greet">
+        Greet <small>( alert )</small>
+      </button>
+    </div>
+
+    <div id="example3">
+      <!-- This one was called "methods in inline handlers" -->
+      <button @click="say('hi')">Say 'hi' in console</button> &nbsp;
+      <button @click="say('yay')">Say 'yay' in console</button>
+    </div>
+
+    <div id="example4">
+      <button @click="warn('Nah!', $event)">
+        Click me
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="app-2">
+    <div id="example-event-modifier">
+      <!-- 
+        I'm listing some of the "easy" listeners here,
+        since I havn't learn how the other listeners work (ah).
+
+        The `.prevent` is the easiest one
+        the fullname of it is `Event.preventDefault`.
+
+        And of course, these modifies are able 
+        to be chained together (the "order" matters, though).
+       -->
+      <a @click.once.prevent='' href="https://google.com">
+        Access Google (you can't)
+      </a>
+      <form @submit.prevent=''>
+        <button type="submit">Submit</button> <small>(deactivated)</small>
+      </form>
+    </div>
+
+    <div id="example-key-modifier">
+      <!-- 
+        The latter one (`keyCode`) is NOT recommended,
+        it might stop working in the future as it has deprecated.
+
+        But you CAN still use them, without a doubt,
+          what I'm really concern (my thought) is that,
+          scenarios like "H" and "Ctrl+H" is actually the SAME.
+          (don't panic.. you still got "system mod key" (later on)).
+
+        Here's the summary
+        1. Vue got some aliases for the most commonly used ones.
+        2. You can define your custom key modifier aliases (Vue).
+       -->
+      <input @keyup.enter="say('hi')"> <small>(sayHi by pressing 'enter' inside this)</small><br>
+      <input @keyup.81="say('hi')"> <small>(sayHi by inputing 'Q/q' inside this)</small>
+    </div>
+
+    <div id="example-system-modifier-key">
+      <!-- 
+        To be clear, these keys are different from before.
+        They have different behaviors between 'keyup' | '.ctrl'.
+       -->
+      <input @keyup.ctrl.66="say('I pressed <Ctrl+B>!')"> <small>(press 'ctrl+b' then check console!)</small>
+    </div>
+
+    <div id="example-system-modifier-key-with-dot-exact">
+      <button @click.exact="say('NAH')">
+        nothin(yea) -> press
+      </button><br>
+
+      <button @click.alt="say('.alt')">
+        alt(&else) -> press
+      </button><br>
+
+      <button @click.alt.exact="say('.alt & else')">
+        alt( only) -> press
+      </button><br><br>
+    </div>
+
+    <div id="example-mouse-button-modifier">
+      <button @click.exact.left="say('click with left')">
+        nothing -> press(left)
+      </button><br>
+
+      <button @click.exact.middle="say('click with middle')">
+        nothing -> press(middle)
+      </button><br>
+
+      <button @click.shift.exact.middle="say('click with shift+middle')">
+        shift -> press(middle)
+      </button>
+    </div>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+        counter: 0,
+        greeting: 'Hello!',
+      },
+
+      methods: {
+        greet: function (event) {
+          // The evt param is auto-assigned the `event` object
+          // take care of the diff between console.log & alert.
+          alert(this.greeting + '!');
+
+          // You'll only see ONE alert if using `console.log`
+          if (event) {
+            alert(event.target.tagName);
+          }
+        },
+
+        say: function (message) {
+          console.warn("The msg => " + message);
+        },
+
+        warn: function (message, event) {
+          if (event) {
+            event.preventDefault();
+          }
+          console.log(message);
+        }
+      }
+    });
+
+    var vm2 = new Vue({
+      el: '#app-2',
+      data: {
+        counter: 0,
+      },
+      methods: {
+        say: function (message) {
+          console.warn("The msg => " + message);
+        },
+      }
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 2em;
+    }
+
+    button {
+      margin: 5px;
+    }
+  </style>
+</body>
+
+</html>
