@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>01</title>
+</head>
+
+<body>
+  <div id="app-list-index-and-key">
+    <div>
+      <ul>
+        <!-- 
+          You still have FULL access the other vars in `data`.
+          So you're free to use the other vars to interact with the instance.
+
+          Either  "inst in LIST"  (Vue's syntax)
+          Or      "inst of LIST"  (JS 's syntax)  (ah, it's fine..)
+
+          Or      "(inst, idx) in LIST"   (2nd optional arg for index)
+         -->
+        <li v-for="(inst, idx) in people">
+          {{ greeting_msg }}! {{ inst.name }} ( & the index -> {{ idx }} )
+        </li>
+
+        <li v-for="inst of people">
+          What's up, {{ inst.name }}!
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <ul>
+        <!-- 
+          The `inst in LIST/OBJECT` is still acceptable btw.
+          
+          List    (X, Y)      ->  inst, index       [ {} , {} ]
+          Object  (X, Y)      ->  inst, key         { .. , .. }
+          Object  (X, Y, Z)   ->  inst, key, index  { .. , .. }   (damn..)
+         -->
+        <li v-for="(item, key) of her_profile">
+          {{ item }} &lt;- {{ key }}
+        </li>
+
+        <br>
+
+        <li v-for="(item, key, index) of her_profile">
+          [{{ index + 1 }}] -&gt; {{ item }} &lt;- {{ key }}
+        </li>
+      </ul>
+    </div>
+
+    <div v-for="inst in people" :key="inst.id" v-show="visibleOrNot">
+      <!-- 
+        It does the same thing even without the `v-bind:key`.
+        It'll make Vue able to <identify the nodes> (like the `key` in `<input>`?)
+       
+        By the way,
+          It do HAVE other usages other than the `v-for`.
+        -->
+    </div>
+  </div>
+
+  <div id="app-list-change-detection-and-caveats">
+    <div>
+      <ul style="color:olivedrab">
+        <!-- 
+          This part talks about the "array detection".
+          That is, Vue itself will observe this (then trigger the view updates!).
+
+          Also, about the "returning new an array"
+          The cost is not that huge, it's actually quite efficient (author said).
+         -->
+        <!-- Check the notes down below! (vm2 -> data) -->
+        <li v-for="(inst, idx) of people">
+          {{ idx }} --&gt; {{ inst }}
+        </li>
+      </ul>
+
+      <ul>
+        <!-- Check the notes down below! (vm2 -> data) -->
+        <li v-for="(inst, idx) of items_list_caveats">
+          {{ idx }} --&gt; {{ inst }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="app-object-change-detection-and-caveats">
+    {{ her_profile }}
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '#app-list-index-and-key',
+
+      data: {
+        greeting_msg: 'Hello',
+        people: [
+          { name: 'John' },
+          { name: 'Alex' },
+          { name: 'York' },
+        ],
+
+        her_profile: {
+          fullName: 'Jen Looper',
+          gender: 'female',
+          age: 35,
+        },
+
+        visibleOrNot: false,
+      },
+    });
+
+    var vm2 = new Vue({
+      el: '#app-list-change-detection-and-caveats',
+
+      data: {
+        people: [
+          /*
+            You could call some array methods in the ChromeDevTools.
+            
+            Here's some examples
+            >> vm2.people.push   ( {name: 'Dank'} )    // append
+            >> vm2.people.unshift( {name: 'Hela'} )    // append as 1st
+            >> vm2.people.pop    (                )    // pop
+            >> vm2.people.shift  (                )    // popleft
+            >> vm2.people.splice ( start, delcnt, items_to_be_inserted ) // doc
+          */
+          { name: 'Aber' },
+          { name: 'Crob' },
+          { name: 'Bond' },
+        ],
+        items_list_caveats: [
+          /*
+            ------ << Pitfall alert !! >> ------
+            
+            There're situations where Vue CANNOT detecting changes (ah)
+            1. Set an item directly with its index  ( e.g.  a[0] = "Zero" )
+            2. Modify the length of the array (drct)( e.g.  v.a.length=NEW_LEN)
+          
+            Solutions for #1-Caveat
+            >> Vue.set    (vm2.ITEMS, 0,  'ImZero')   // idiomatic
+            >> vm2.$set   (vm2.ITEMS, 0,  'ImZero')   // idiomatic (same as ↑)
+            >> vm2.items.splice   (0, 1,  'ImZero')   // (WARN) special scenarios
+            >> vm2.items.unshift  (       'ImZero')   // (WARN) special scenarios
+          
+            Solutions for #2-Caveat
+            >> vm2.items.splice(10)   // won't change if it's smaller than given num
+            >> vm2.items.splice(3)    // definitely shrink if IT smaller than given num
+            */
+          'A',
+          'B',
+          'C',
+        ]
+      },
+    });
+
+    var vm3 = new Vue({
+      el: '#app-object-change-detection-and-caveats',
+
+      data: {
+        /*
+          Vue does NOT allow ADDING new <root> reactive properties.
+          That is, sth like `vm3.obj_b = 10` will NOT be reactive!!
+
+          Yet, you could add new reactive props to <nested> object.
+          Just so you know, 
+            what we're talking about is "ADD" rather than "MODIFY"
+            that means 'vm3.her_profile.age=100' is ok, but 'ADD' is NOT.
+        */
+        obj_a: "Hey I'm A",
+
+        /*
+          So.. How we're gonna add new (reactive) props?
+          
+          If you wanna add ONE prop
+          >> Vue.set  (vm3.her_profile, 'gender', 'female') // fair enough
+          >> vm3.$set (vm3.her_profile, 'gender', 'female') // fair enough
+        
+          If you wanna add MULTIPLE props
+          >> vm3.her_profile = Object.assign(
+          >>   {},                     // meant to be NULL
+          >>   her_profile,            // the one you'll add to
+          >>   { 
+          >>     'gender' : 'female',  // new props       !
+          >>     'country': 'USA'   ,  // new props again !
+          >>   }
+          >> )
+        */
+        her_profile: {
+          name: 'Jen Looper',
+          age: 36,
+        },
+      },
+    });
+  </script>
+</body>
+
+</html>

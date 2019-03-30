@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>02</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <p>
+      Even num from one to five:
+      <br>
+      <span style="color:red" v-for="n in even(numbers)">
+        {{ n }}&nbsp;
+      </span>
+      <br>
+      <span style="color:red" v-for="n in evenNumbers">
+        {{ n }}&nbsp;
+      </span>
+    </p>
+  </div>
+
+  <div id="app-2">
+    <div id="vfor-with-range">
+      <!-- Ah -->
+      <span v-for="n in [1,2,3]"> {{ n }} </span><br>
+
+      <!-- range(10) => range(1, 10) -->
+      <span v-for="n in 5"> {{ n }} </span><br>
+      <span v-for="n of 5"> {{ n }} </span><br>
+    </div>
+
+    <div id="vfor-with-template">
+      <ul>
+        <!--
+          This could be used to render a block of elements.
+          What we did before is `<li v-for=".."> .. </li>` (one).
+        -->
+        <template v-for="item in items">
+          <li>{{ item.msg }}</li>
+        </template>
+      </ul>
+
+      <!-- 
+        Go test this part in ChromeDevTools
+        >> vm2.todos.pop()    // inst -> todo
+        >> vm2.todos.pop()    // inst -> todo
+        >> vm2.todos.pop()    // No TODOs left.
+       -->
+      <ul v-if="todos.length">
+        <li v-for="todo in todos">
+          {{ todo }}
+        </li>
+      </ul>
+      <p v-else>No TODOs left.</p>
+    </div>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+        numbers: [1, 2, 3, 4, 5],
+      },
+      computed: {
+        evenNumbers: function () {
+          return this.numbers.filter(function (number) {
+            return number % 2 === 0;
+          });
+        },
+      },
+      methods: {
+        even: function (numbers) {
+          return numbers.filter(function (number) {
+            return number % 2 === 0;
+          });
+        },
+      }
+    });
+
+    var vm2 = new Vue({
+      el: '#app-2',
+
+      data: {
+        numbers: [1, 2, 3, 4, 5],
+
+        items: [
+          { msg: 'Artstation' },
+          { msg: 'Deviant' },
+          { msg: 'Kotatu' },
+        ],
+
+        todos: [
+          'Learn Vue',
+          'Learn Django',
+        ]
+      },
+    });
+
+  </script>
+</body>
+
+</html>
