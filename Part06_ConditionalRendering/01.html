@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>01</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <h2 v-if="vue_is_awesome">Vue is awesome!</h2>
+    <h2 v-else>Oh no..</h2>
+
+    <template v-if="visibleOrNot">
+      <!-- No, apparently -->
+      <h1>XX</h1>
+      <h1>XX</h1>
+    </template>
+
+    <div v-if="Math.random() > 0.5">
+      Now you see me ( > 0.5 )
+    </div>
+    <div v-else>
+      Now you don't ( < 0.5 ) </div> <div v-if="valForIfElse === 'A'">
+        => A
+    </div>
+    <div v-else-if="valForIfElse === 'B'">
+      => B
+    </div>
+    <div v-else-if="valForIfElse === 'C'">
+      => C
+    </div>
+    <div v-else>
+      Not A/B/C !
+    </div>
+  </div>
+
+  <div id="app-2">
+    <div>
+      <template v-if="loginType === 'username'">
+        <!-- 
+          The `key` inside the `input` is kinda like an ID
+          It was used to make sure these are two different inputs. 
+
+          It's like telling Vue 
+          -- "don't re-use them!" 
+          -- "they are completely separate!"
+
+          The `label` are still re-used though (without `key`)
+          
+          But hey, what is "re-use", exactly?
+            For my understanding, if you don't add `key` to `input`
+            it'll only replace the `placeholder` instead of `input`
+            that is, it might mixed up the data, that's not ok right?
+        -->
+        <label>Username</label>
+        <input placeholder="Enter your username" key="username-input" />
+      </template>
+      <template v-else>
+        <label>Email</label>
+        <input placeholder="Enter your email address" key="email-input" />
+      </template>
+      <button @click="toggleLoginType">Toggle login type</button>
+    </div>
+
+    <div v-show="showThisOrNot">
+      <!-- 
+        It's used to conditionally displaying an element.
+        Kinda the same duties as the `v-if` (& `v-if-else`, `v-else`).
+
+        The difference between them is that,
+          For `v-if`      False? Not showing them at all (even DOM)
+          For `v-show`    False? Toggle the CSS (=> `display: none`)
+       
+        Oh, by the way,
+          it cannot be used inside `<template>`, nor the `v-if`.
+        
+        And.. some suggestions
+        1. Use `v-show` if ya need to toggle sth very often.
+        2. Use `v-if`   if the cond is unlikely to change at runtm(?)
+          -->
+      Hello from `v-show`!
+    </div>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '#app-1',
+      data: {
+        vue_is_awesome: true,
+        visibleOrNot: false,
+        valForIfElse: 'E',
+      }
+    });
+
+    var vm2 = new Vue({
+      el: '#app-2',
+      data: {
+        loginType: 'username',
+
+        showThisOrNot: true, // toggle the CSS only
+      },
+      methods: {
+        toggleLoginType: function () {
+          // It's kinda unintuitive, right?
+          // Well but it should, now::username CLICK now:email!
+          return this.loginType = this.loginType === 'username' ? 'email' : 'username';
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
