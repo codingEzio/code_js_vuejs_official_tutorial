@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>01</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div id="example-input-text">
+      <input v-model="message_exp1" placeholder="Write somethin'" />
+      <p>Message is =&gt; {{ message_exp1 }}</p>
+    </div>
+
+    <div id="example-input-multiline-text" v-show="visibleOrNot">
+      <!-- 
+        This one is a MUST,
+          YES for <textarea v-model="text" ..>  </..>
+          NO  for <textarea .. >  {{ text }}    </..>
+       -->
+      <textarea v-model="message_exp2" placeholder="Write somethin'"></textarea>
+      <br>
+      <p style="white-space: pre-line;">
+        {{ message_exp2 }}
+      </p>
+    </div>
+
+    <div id="example-checkbox">
+      <input type="checkbox" id="simple_ckbx" v-model="ckbox_exp1" />
+      <label for="simple_ckbx">{{ ckbox_exp1 }} <small>(dynamic)</small></label>
+    </div>
+
+    <div id="example-multiple-checkboxes">
+      <input type="checkbox" id="django" value="Django" v-model="checkedNames" />
+      <label for="django">Django</label>
+      <input type="checkbox" id="react" value="React" v-model="checkedNames" />
+      <label for="react">React</label>
+      <input type="checkbox" id="vuejs" value="Vue.js" v-model="checkedNames" />
+      <label for="vuejs">Vue.js</label>
+
+      <br>
+      <span>Checked names: {{ checkedNames }}</span>
+    </div>
+
+    <div id="example-radiobox">
+      <input type="radio" id="one" value="One" v-model="pickOneOrTwo" />
+      <label for="one">One</label>
+      <br>
+      <input type="radio" id="two" value="Two" v-model="pickOneOrTwo" />
+      <label for="two">Two</label>
+      <br>
+
+      <span>Picked: {{ pickOneOrTwo }}</span>
+    </div>
+
+    <div id="example-select">
+      <select v-model="select_exp1">
+        <option disabled value="">Select one of them</option>
+        <option>Eat</option>
+        <option>Sleep</option>
+        <option>Study</option>
+      </select>
+
+      <span>Selected: {{ select_exp1 }}</span>
+    </div>
+
+    <div id="example-select-multiple-options">
+      <select multiple v-model="select_exp2">
+        <option>C</option>
+        <option>D</option>
+        <option>C++</option>
+      </select>
+
+      <span>Selected: {{ select_exp2 }}</span>
+    </div>
+
+    <div id="example-select-dynamic-options">
+      <select v-model="select_exp3">
+        <option v-for="inst of select_exp3_list" :value="inst.ucase">
+          {{ inst.lcase }}
+        </option>
+      </select>
+
+      <span>Selected: {{ select_exp3 }}</span>
+    </div>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+        visibleOrNot: false,
+
+        message_exp1: '',
+        message_exp2: '',
+
+        ckbox_exp1: false,
+        checkedNames: [],
+
+        pickOneOrTwo: 'One',
+        select_exp1: '',
+        select_exp2: '',
+        select_exp3: 'Angular',
+        select_exp3_list: [
+          { lcase: 'vuejs', ucase: 'Vue.js' },
+          { lcase: 'react', ucase: 'React' },
+          { lcase: 'angular', ucase: 'Angular' },
+        ],
+      },
+
+
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 1.5em;
+    }
+
+    p,
+    div {
+      font-family: 'Fira Code', 'Verdana';
+    }
+
+    button,
+    div {
+      margin: 7px;
+    }
+  </style>
+</body>
+
+</html>

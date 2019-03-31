@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>02</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div id="example-val-binding-basics">
+      <input type="radio" v-model="exp1_radio" value="Hi from 'radio'" />
+      <input type="checkbox" v-model="exp1_checkbox" />
+
+      <select v-model="exp1_selectoption">
+        <option value="Hi from 'select-option'">I'm SELECT</option>
+      </select>
+
+      <p>
+        [1] <span style="color: red">{{ exp1_radio }}</span><br>
+        [2] <span style="color: green">{{ exp1_checkbox }}</span><br>
+        [3] <span style="color: purple">{{ exp1_selectoption }}</span><br>
+      </p>
+
+      <div id="example-checkbox-with-true-values">
+        <!-- 
+          The `true-value` & `false-value` give you some kind of 
+          freedom to customize its returning values (radio is another option).
+         -->
+        <input type="checkbox" v-model="exp2_checkbox" true-value="yes" false-value="no" />
+        <input type="checkbox" v-model="exp2_checkbox_2" true-value=true false-value=false />
+      </div>
+
+      <div id="example-radio-bind-values">
+        <!-- 
+          I don't really know what can this example do.
+          Here's an example: `vm1.exp3_radio === vm1.a` (=> true)
+         -->
+        <input type="radio" v-model="exp3_radio" :value="exp3_a">
+      </div>
+
+      <div id="example-select-options-bind-values">
+        <!-- 
+          typeof vm1.exp4_selected
+          >> BEFORE     string          ''
+          >> AFTER      object          {..}
+          >> AFTER      object.number   123
+         -->
+        <select v-model="exp4_selected">
+          <option :value="{ number: 123 }">123</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+        exp1_radio: '',
+        exp1_checkbox: true,
+        exp1_selectoption: '',
+
+        exp2_checkbox: 'yes',
+        exp2_checkbox_2: false,
+
+        exp3_a: 'A',
+        exp3_radio: 'A',
+
+        exp4_selected: '',
+      }
+    });
+  </script>
+</body>
+
+</html>

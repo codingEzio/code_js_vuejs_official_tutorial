@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>03</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div id="modifier-lazy">
+      <!-- 
+        The `span` will only be updated when the `input` loses focus (huh)
+        Offical doc says "it syncs the input with data after each input event".
+       -->
+      <input v-model.lazy="msg_lazy" placeholder="Input then enter" />
+      <span>The message =&gt; {{ msg_lazy }}</span>
+    </div>
+
+    <div id="modifier-number">
+      <!-- 
+        The user input will be auto-typecasted to a number.
+        We NEED it cuz the default `type="number"` wasn't enough (still => str).
+
+        It might not be ?sufficient, but I think it suffices MOST of the cases.
+       -->
+      <input v-model.number="msg_number" type="number" placeholder="Input numbers" />
+      <span>The message =&gt; {{ msg_number }}</span>
+    </div>
+
+    <div id="modifier-trim">
+      <!-- 
+        Those useless spaces/tabs will be trimed when the input loses focus.
+       -->
+      <input v-model.trim="msg_trim" placeholder="Input strings" />
+      <span>The message =&gt; {{ msg_trim }}</span>
+    </div>
+  </div>
+
+  <script>
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+        msg_lazy: '',
+        msg_number: '',
+        msg_trim: '',
+      }
+    });
+  </script>
+</body>
+
+</html>
