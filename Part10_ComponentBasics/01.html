@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>01</title>
+</head>
+
+<body>
+  <div id="example-first-component">
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+  </div>
+
+  <div id="example-passing-data-with-props">
+    <div id="data-hardcoded">
+      <blog-post-title title='Ada'></blog-post-title>
+      <blog-post-title title='Bob'></blog-post-title>
+      <blog-post-title title='Cin'></blog-post-title>
+    </div>
+
+    <div id="data-from-vue">
+      <blog-post-title v-for="inst in blog_titles" :key="inst.id" :title="inst.title">
+      </blog-post-title>
+    </div>
+
+  </div>
+
+  <script>
+    /* ------------------ Part 1 ------------------- */
+
+    // Components do need to be REGISTERED,
+    // and they have different scopes, i.e. `global` & `local`
+    // we'll talk about more about this in the next section (Component In Depth).
+    Vue.component('button-counter', {
+      // The one we're registering is 'global' scope, just sayin'
+      data: function () {
+        // A component's `data` options MUST be a FUNCTION.
+        // So that each inst of it could maintain its own object.
+        return {
+          // All of inst would be updated at the same time
+          // if you choose to use `cnt: 0` directly rather `func() { ret { .. } }`
+          cnt: 0
+        }
+      },
+      template: '<button @click="cnt++">You clicked me {{ cnt }} times.</button>'
+    })
+
+    var vm1 = new Vue({
+      el: '#example-first-component',
+    });
+
+    /* ------------------ Part 2 ------------------- */
+
+    Vue.component('blog-post-title', {
+      props: ['title'],
+      template: '<span style="color: red">{{ title }}</span>'
+    });
+
+    var vm2 = new Vue({
+      el: '#example-passing-data-with-props',
+      data: {
+        blog_titles: [
+          { id: 1, title: 'Cin' },
+          { id: 2, title: 'Bob' },
+          { id: 3, title: 'Ada' },
+        ]
+      }
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 1.6em;
+      line-height: 1.6em;
+    }
+
+    p,
+    div {
+      font-family: 'Fira Code', 'Verdana';
+    }
+
+    div {
+      margin: 7px;
+    }
+  </style>
+</body>
+
+</html>

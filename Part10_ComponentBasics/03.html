@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>03</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div>
+      <alert-box>
+        <!-- 
+          It's like a different kind of 'interpolation' ( e.g. {{ .. }} ) 
+          
+          Articles about slots
+            https://skyronic.com/blog/vue-slots-example
+            https://vuejs.org/v2/guide/components-slots.html
+        -->
+        Pass content into a component (like me right now).
+      </alert-box>
+    </div>
+  </div>
+
+  <script>
+    Vue.component('alert-box', {
+      template: `
+        <div style="color: red; font-style: italic; outline: groove; padding: 5px;">
+          <strong>Error!</strong>
+          <slot></slot>
+        </div>
+      `,
+    });
+
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+
+      }
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 1.6em;
+      line-height: 1.6em;
+    }
+
+    p,
+    div {
+      font-family: 'Fira Code', 'Verdana';
+    }
+
+    div {
+      margin: 7px;
+    }
+  </style>
+</body>
+
+</html>

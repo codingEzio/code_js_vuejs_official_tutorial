@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>04</title>
+</head>
+
+<body>
+  <div id="example-dynamic-component">
+    <p>
+      In this example, we'll talk about <strong>Dynamic Components</strong>.
+    </p>
+
+    <button v-for="single_tab in tabs" :key="single_tab" :class="['tab-button', { active: currentTab === single_tab }]"
+      @click="currentTab = single_tab">
+      {{ single_tab }}
+    </button>
+
+    <!-- 
+      This tag makes all the MAGIC happen (switching components).
+    -->
+    <component :is="currentTabComponent" class="tab">
+    </component>
+  </div>
+
+  <script>
+    Vue.component('tab-bfv', {
+      template: '<div>BFV component</div>'
+    });
+
+    Vue.component('tab-bf1', {
+      template: '<div>BF1 component</div>'
+    });
+
+    Vue.component('tab-tf2', {
+      template: '<div>TF2 Component</div>'
+    });
+
+    var vm1 = new Vue({
+      el: '#example-dynamic-component',
+
+      data: {
+        currentTab: 'BFV',
+        tabs: ['BFV', 'BF1', 'TF2'],
+      },
+
+      computed: {
+        currentTabComponent: function () {
+          return 'tab-' + this.currentTab.toLowerCase();
+        },
+      },
+    });
+  </script>
+
+  <style>
+    /* Copied from https://jsfiddle.net/chrisvfritz/o3nycadu/ */
+
+    .tab-button {
+      padding: 6px 10px;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      background: #f0f0f0;
+      margin-bottom: -1px;
+      margin-right: -1px;
+    }
+
+    .tab-button:hover {
+      background: #e0e0e0;
+    }
+
+    .tab-button.active {
+      background: #e0e0e0;
+    }
+
+    .tab {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    /* My own */
+
+    body {
+      margin: 1.6em;
+    }
+
+    p,
+    div {
+      font-family: 'Verdana';
+    }
+  </style>
+</body>
+
+</html>

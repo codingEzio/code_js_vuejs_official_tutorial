@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>05</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <p>
+      In this example, we'll talk about some
+      <span style="color: red; font-weight: bold; font-style: italic;">Caveats</span>
+      of <strong>DOM Template Parsing</strong>.
+    </p>
+
+    <div>
+      <!-- 
+        In short, most of the elements have its LIMITATIONS.
+        e.g.
+          ul, ol, table     you can't put EVERYTHING into it 
+          li, tr, option    it can be ONLY appear inside specific elements
+        
+        And two more things
+        1. We do HAVE some workaround (overpass the limits).
+        2. The limits MIGHT NOT apply in some scenarios (side of Vue).
+      -->
+
+      <!-- 
+        Ah! the most frustrated thing is that
+        I can't really find those BAD examples for cmp purposes (hmm).
+       -->
+      <table border="1">
+        <comp-thtr></comp-thtr>
+        <comp-thtr></comp-thtr>
+        <!-- <tr is="comp-thtr"></tr> -->
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    Vue.component('comp-thtr', {
+      template: '<div><th>Hey</th><tr>AAA</tr><tr>BBB</tr></div>'
+    });
+
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+
+      }
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 1.6em;
+      line-height: 1.6em;
+    }
+
+    p,
+    div {
+      font-family: 'Verdana';
+    }
+
+    div {
+      margin: 7px;
+    }
+  </style>
+</body>
+
+</html>

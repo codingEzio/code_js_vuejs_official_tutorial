@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>02</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div>
+      <blog-post v-for="inst in posts" :key="inst.id" :post="inst"></blog-post>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="app-2">
+    <div :style="{ fontSize: post_fontsize + 'em' }">
+      <!-- 
+        The other way is that replace the 'event'
+        with our own method, like this `@enlarge-text=onEnlargeText`.
+       -->
+      <blog-post-with-event v-for="inst in posts" :key="inst.id" :post="inst" @enlarge-text="post_fontsize += $event">
+      </blog-post-with-event>
+    </div>
+  </div>
+
+  <div id="app-3">
+    <div>
+      <!-- 
+        #TODO I do NOT understand how this part works.
+        
+        Here's the link for this part
+        https://vuejs.org/v2/guide/components.html#Using-v-model-on-Components
+       -->
+      <custom-input v-model="searchText" placeholder="Write something"></custom-input>
+      <p>The message is =&gt; {{ searchText }}</p>
+    </div>
+  </div>
+
+  <script>
+    /* ------------------ Part 1 ------------------- */
+
+    Vue.component('blog-post', {
+      // LEFT   :bind-XX    PROPS HERE
+      // RIGHT  "XXXX"      DYNAMIC
+      props: ['post'],
+
+      // Just a reminder here,
+      // the `v-html` treats the values as HTML code & then trans it.
+      template: `
+        <div class="blog-post">
+          <span style="color: red">{{ post.title }}</span>
+          <div v-html="post.content"></div>
+        </div>
+      `
+    });
+
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+        posts: [
+          { id: 1, title: 'Cin', content: '<p>Hello</p>' },
+          { id: 2, title: 'Bob', content: '<p>Hello</p>' },
+          { id: 3, title: 'Ada', content: '<p>Hello</p>' },
+        ],
+      },
+    });
+
+    /* ------------------ Part 2 ------------------- */
+
+    Vue.component('blog-post-with-event', {
+      props: ['post'],
+      template: `
+        <div class="blog-post">
+          <span style="color: red;">{{ post.title }}</span>
+          <button @click="$emit('enlarge-text', 0.3)">
+            Enlarge text
+          </button>
+          <div v-html="post.content"></div>
+        </div>
+      `,
+    })
+
+    var vm2 = new Vue({
+      el: '#app-2',
+
+      data: {
+        posts: [
+          { id: 1, title: 'Cin', content: '<span style="color: green;">Hello</span>' },
+          { id: 2, title: 'Bob', content: '<span style="color: green;">Hello</span>' },
+          { id: 3, title: 'Ada', content: '<span style="color: green;">Hello</span>' },
+        ],
+
+        post_fontsize: 1,
+      },
+
+      methods: {
+        onEnlargeText: function (enlargeAmount) {
+          this.post_fontsize += enlargeAmount;
+        },
+      },
+    });
+
+    /* ------------------ Part 3 ------------------- */
+
+    Vue.component('custom-input', {
+      props: ['value'],
+      template: `
+        <input
+          :value="value"
+          @input="$emit('input', $event.target.value)" />
+      `
+    });
+
+    var vm3 = new Vue({
+      el: '#app-3',
+
+      data: {
+        searchText: '',
+      }
+    });
+
+  </script>
+
+  <style>
+    body {
+      margin: 1.6em;
+      line-height: 1.6em;
+    }
+
+    p,
+    div {
+      font-family: 'Fira Code', 'Verdana';
+    }
+
+    div {
+      margin: 7px;
+    }
+  </style>
+</body>
+
+</html>
