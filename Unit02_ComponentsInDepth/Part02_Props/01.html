@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>01</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div>
+      <exp01-blog-post post-title="Hi there!"></exp01-blog-post>
+    </div>
+
+    <hr>
+
+    <div>
+      <p>A list of type-checked props <small>( you won't be able to see all of them! )</small></p>
+      <ol>
+        <exp02-blog-post :title="post.title">
+        </exp02-blog-post>
+        <exp02-blog-post :title="post.title + ' by ' + post.author.name">
+        </exp02-blog-post>
+
+        <!-- 
+          The rest of these do not have explicit outputs 
+        -->
+
+        <exp02-blog-post :likes="42">
+        </exp02-blog-post>
+        <exp02-blog-post :likes="post.likes">
+        </exp02-blog-post>
+
+        <!-- 
+          The default val for the 1st one is ACTUALLY 'true'!!
+         -->
+        <exp02-blog-post is_published></exp02-blog-post>
+        <exp02-blog-post :is_published="false"></exp02-blog-post>
+        <exp02-blog-post :is_published="post.isPublished"></exp02-blog-post>
+
+        <exp02-blog-post :comment-ids="[10, 20]"></exp02-blog-post>
+        <exp02-blog-post :comment-ids="post.commentIds"></exp02-blog-post>
+
+        <exp02-blog-post :author="{
+          name: 'John',
+          age: 19          
+        }"></exp02-blog-post>
+        <exp02-blog-post :author="post.author"></exp02-blog-post>
+      </ol>
+    </div>
+
+    <hr>
+
+    <div>
+      <!-- 
+        Syntax changes
+          SINGLE  v-bind:post.tile    :OBJECT.PROP
+          ALL     v-bind="post"       v-bind="OBJECT"
+       -->
+      <p>Pass all the properties at one time <small>( like `*args` in Python )</small></p>
+      <ol>
+        <exp02-blog-post v-bind="post"></exp02-blog-post>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    Vue.component('exp01-blog-post', {
+      // For props named in camelBased styles,
+      // you use it as 'camel-based' in DOM (as HTML is case-insensitive)
+      props: ['postTitle'],
+
+      template: '<span style="color: red;">{{ postTitle }}</span>'
+    });
+
+    Vue.component('exp02-blog-post', {
+      // For some props, you need to make a little changes
+      // e.g. 'isPublished' => 'is-published' (& the other props)
+      props: {
+        title: String,
+        likes: Number,
+        isPublished: Boolean,
+        commentIds: Array,
+        author: Object,
+
+        callback: Function,
+        contactsPromise: Promise,
+      },
+
+      template: `
+        <div>
+            <li>{{ title }} </li>
+          </ul>
+        </div>
+      `,
+    });
+
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+        post: {
+          title: '[Title] from vm1-data-post!',
+          likes: 12345,
+          isPublished: false,
+          commentIds: [1, 2, 3],
+          author: {
+            name: 'John',
+            age: 20,
+          },
+          // callback: Function,
+          // contactsPromise: Promise,
+        },
+      },
+
+      methods: {
+
+      },
+    });
+
+    /*
+      About <One-way Data Flow>
+      -> When the parent prop updates, it'll flow down to the child
+      -> If you MUTATE a prop inside a child comp, you'll be WARNED
+
+      BUT, there're two cases
+      1. The prop is used to { PASS an INITIAL val } (child might use later)
+      2. The prop is as a raw val that { NEEDS to be TRANSFORMED }
+    
+      Oh, one more thing!
+      || Since the object & arrays is JavaScript are passed by REF
+      || so you might accidently AFFECT the prop's val to parent's side
+     */
+    Vue.component('exp03-oneway-binding', {
+      props: [
+        'initialCounter',
+        'size',
+      ],
+
+      // Ways to solve the Problem #1
+      data: function () {
+        return {
+          counter: this.initialCounter
+        };
+      },
+
+      // Ways to solve the Problem #2
+      computed: {
+        normalizedSize: function () {
+          return this.size.trim().toLowercase()
+        },
+      },
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 1.65em;
+      line-height: 1.65em;
+    }
+
+    p,
+    div {
+      font-family: 'Fira Code', 'Verdana';
+    }
+
+    div {
+      margin: 7px;
+    }
+  </style>
+</body>
+
+</html>

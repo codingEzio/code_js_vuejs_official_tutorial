@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title></title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div>
+      <glcomp-one></glcomp-one>
+      <glcomp-two></glcomp-two>
+    </div>
+
+    <div>
+      <lccomp-one></lccomp-one>
+      <lccomp-two></lccomp-two>
+    </div>
+  </div>
+
+  <script>
+    /*
+      As its name suggests, they components have different scopes.
+      The <global> could be used EVERYWHERE & can be nested with each other.
+    
+      Yet, the <local> has a much smaller scope.
+      If you wanna use 'Comp-A' inside a 'Comp-B' (if global, simply DO it)
+        >> var comp_a = { ... }
+        >> var comp_b = {
+            .. // props
+            .. // template & else
+            components: { 'component-a': comp_a }
+          }
+      
+      There's a section I havn't do yet.  #TODO Finish this later.
+      https://vuejs.org/v2/guide/components-registration.html#Automatic-Global-Registration-of-Base-Components
+    */
+
+    // Registered globally
+    Vue.component('glcomp-one', { template: '<span>Globl</span>' });
+    Vue.component('glcomp-two', { template: '<span>Globl</span>' });
+
+    // Registered locally (in the `component` inside Vue's instance)
+    var lccomp_one = { template: '<span>Local</span>' };
+    var lccomp_two = { template: '<span>Local</span>' };
+
+    var lccomp_thr = {
+      template: '<span>Local</span>',
+      components: {
+        /*
+          For ES2015+ syntax, we would do it like this
+          >> import CompA from './CompA.vue'
+          >> export default {
+          >>   components: {
+          >>     CompA  // Now you can use 'CompA' in the current "component"!
+          >>   }
+          >> }
+
+          The 'CompA' is a shorthand for 'CompA: CompA',
+          like the way we're doing right now (ah), do notice that
+              LEFT    the one you're using in template
+              RIGHT   the component's name from the 'XX.vue' file
+        */
+        'lccomp-one': lccomp_one, // Now you can use 'comp_one' inside '.._thr'
+        'lccomp-two': lccomp_two, // but do rember this isn't the only way!
+      }
+    }
+
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+
+      },
+
+      components: {
+        // Why registering components locally anyway?
+        // It mainly due to size-related issues.
+        //  -> Webpack would build all the comps even some of them weren't using
+        //  -> Users   would download some extra stuff (filesize of JavaScript)
+        'lccomp-one': lccomp_one,
+        'lccomp-two': lccomp_two,
+      }
+    });
+  </script>
+</body>
+
+</html>

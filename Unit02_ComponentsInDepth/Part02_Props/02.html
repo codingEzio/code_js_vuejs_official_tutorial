@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>02</title>
+</head>
+
+<body>
+  <div id="app-1">
+    <div>
+
+    </div>
+  </div>
+
+  <script>
+    function HumanBeing(fname, lname) {
+      this.fname = fname;
+      this.lname = lname;
+    }
+
+    // If the values doesn't MEET the requirements
+    // Vue would give you warning messages in the ChromeDevTools.
+    Vue.component('example-for-prop-validation', {
+
+      // Note that `props` are VALIDATED BEFORE a comp inst is created,
+      // that is, the `data`, `computed` WILL NOT AVAILABLE at that time!!
+      props: {
+
+        // The `null` & `undefined` would PASS ANY TYPE VALIDATIONS!
+        propA: Number,
+        propB: [Number, String],
+
+        propC: { type: String, required: true },
+        procD: { type: Number, default: 100 },
+
+        // Types like `Object` or `array` must
+        // be returned from a FACTORY function (ah, simply `return ..`)
+        procE: {
+          type: Object,
+          default: function () {
+            return { message: 'Hello' }
+          }
+        },
+
+        // Custom validator
+        procF: {
+          validator: function (value) {
+            return ['success', 'warning', 'data'].indexOf(value) !== -1;
+          }
+        },
+
+        // Type checking  #TODO Huh?? {readWorldUsage, intuitiveExpl} pls!
+        procG: {
+          author: HumanBeing
+        },
+      }
+    })
+
+    var vm1 = new Vue({
+      el: '#app-1',
+
+      data: {
+
+      },
+
+      methods: {
+
+      },
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 1.65em;
+      line-height: 1.65em;
+    }
+
+    p,
+    div {
+      font-family: 'Fira Code', 'Verdana';
+    }
+
+    div {
+      margin: 7px;
+    }
+  </style>
+</body>
+
+</html>
