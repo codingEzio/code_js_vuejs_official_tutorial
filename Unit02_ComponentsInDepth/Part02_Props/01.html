@@ -18,24 +18,38 @@
     <hr>
 
     <div>
-      <p>A list of type-checked props <small>( you won't be able to see all of them! )</small></p>
+      <p>A list of type-checked props <small>(some don't have visible output)</small></p>
       <ol>
+        <!-- 
+          The `:` or `v-bind:` is kinda like telling Vue that
+            it's not just a String
+            but an JS expression (that's why u can do whatever u want)
+
+          Of course, it's actually two cases
+            1) dynamically assigned (aka. data from `data`)
+            2) expressions (much simpler, aka. JS expression)
+         -->
         <exp02-blog-post :title="post.title">
         </exp02-blog-post>
         <exp02-blog-post :title="post.title + ' by ' + post.author.name">
         </exp02-blog-post>
 
         <!-- 
-          The rest of these do not have explicit outputs 
+          The rest of them do not have explicit output.
         -->
 
+        <!-- 
+          Same thing as I've talked about before:
+            :likes (aka. v-bind:likes) tells Vue that
+            the `"42"` is not a String but a "VALUE" (42) (aka. JS expression)
+         -->
         <exp02-blog-post :likes="42">
         </exp02-blog-post>
         <exp02-blog-post :likes="post.likes">
         </exp02-blog-post>
 
         <!-- 
-          The default val for the 1st one is ACTUALLY 'true'!!
+          No value means `true` (so.. it's fine without `v-bind` in HERE)
          -->
         <exp02-blog-post is_published></exp02-blog-post>
         <exp02-blog-post :is_published="false"></exp02-blog-post>
@@ -43,27 +57,32 @@
 
         <exp02-blog-post :comment-ids="[10, 20]"></exp02-blog-post>
         <exp02-blog-post :comment-ids="post.commentIds"></exp02-blog-post>
-
-        <exp02-blog-post :author="{
-          name: 'John',
-          age: 19          
-        }"></exp02-blog-post>
-        <exp02-blog-post :author="post.author"></exp02-blog-post>
       </ol>
     </div>
 
     <hr>
 
     <div>
-      <!-- 
-        Syntax changes
-          SINGLE  v-bind:post.tile    :OBJECT.PROP
-          ALL     v-bind="post"       v-bind="OBJECT"
-       -->
-      <p>Pass all the properties at one time <small>( like `*args` in Python )</small></p>
-      <ol>
+        <!-- 
+          Passing an Object
+         -->
+        <exp02-blog-post :author="{
+          name: 'John',
+          age: 19          
+        }"></exp02-blog-post>
+
+        <!-- 
+          Do remember that the `post` here is just a BIG object
+
+          e.g.
+            single prop   =>  v-bind:PROP_NAME="BIG_OBJECT.PROP_NAME"
+            all of them   =>  v-bind="BIG_OBJECT" (~= :author="p.a" :data="p.d" etc.)
+          
+          Also, do NOT use something like this `v-bind="post.author"`
+            you CAN'T invoke a sub obj like that! (either use `bind` or "bind-all")
+         -->
+        <exp02-blog-post v-bind:author="post.author"></exp02-blog-post>
         <exp02-blog-post v-bind="post"></exp02-blog-post>
-      </ol>
     </div>
   </div>
 
@@ -103,7 +122,7 @@
 
       data: {
         post: {
-          title: '[Title] from vm1-data-post!',
+          title: 'title from vm1-data-post!',
           likes: 12345,
           isPublished: false,
           commentIds: [1, 2, 3],
@@ -117,41 +136,6 @@
       },
 
       methods: {
-
-      },
-    });
-
-    /*
-      About <One-way Data Flow>
-      -> When the parent prop updates, it'll flow down to the child
-      -> If you MUTATE a prop inside a child comp, you'll be WARNED
-
-      BUT, there're two cases
-      1. The prop is used to { PASS an INITIAL val } (child might use later)
-      2. The prop is as a raw val that { NEEDS to be TRANSFORMED }
-    
-      Oh, one more thing!
-      || Since the object & arrays is JavaScript are passed by REF
-      || so you might accidently AFFECT the prop's val to parent's side
-     */
-    Vue.component('exp03-oneway-binding', {
-      props: [
-        'initialCounter',
-        'size',
-      ],
-
-      // Ways to solve the Problem #1
-      data: function () {
-        return {
-          counter: this.initialCounter
-        };
-      },
-
-      // Ways to solve the Problem #2
-      computed: {
-        normalizedSize: function () {
-          return this.size.trim().toLowercase()
-        },
       },
     });
   </script>

@@ -11,83 +11,59 @@
 
 <body>
   <div id="app-1">
-    <div>
-
-    </div>
   </div>
 
   <script>
-    function HumanBeing(fname, lname) {
-      this.fname = fname;
-      this.lname = lname;
-    }
 
-    // If the values doesn't MEET the requirements
-    // Vue would give you warning messages in the ChromeDevTools.
-    Vue.component('example-for-prop-validation', {
+    /*
+      I still don't get it, here's the link
+       https://vuejs.org/v2/guide/components-props.html#One-Way-Data-Flow
+          
+      About <One-way Data Flow>
+      -> When the parent prop updates, it'll flow down to the child
+      -> If you MUTATE a prop inside a child comp, you'll be WARNED (in the console)
 
-      // Note that `props` are VALIDATED BEFORE a comp inst is created,
-      // that is, the `data`, `computed` WILL NOT AVAILABLE at that time!!
-      props: {
+      These are the possible cases you might mutate them
+      1. The prop is used to { PASS an INITIAL val } (child use it as local var)
+      2. The prop is as a raw val that { NEEDS to be TRANSFORMED }
+    
+      Oh, one more thing!
+      || Since the object & arrays is JavaScript are passed by REF
+      || so you might accidently AFFECT the prop's val to parent's side
+     */ 
+    Vue.component('exp03-oneway-binding', {
+      props: [
+        'initialCounter',
+        'size',
+      ],
 
-        // The `null` & `undefined` would PASS ANY TYPE VALIDATIONS!
-        propA: Number,
-        propB: [Number, String],
+      // #1 the prop .. (the `this` might mean inside the 'comp definition'?)
+      data: function () {
+        return {
+          counter: this.initialCounter
+        };
+      },
 
-        propC: { type: String, required: true },
-        procD: { type: Number, default: 100 },
-
-        // Types like `Object` or `array` must
-        // be returned from a FACTORY function (ah, simply `return ..`)
-        procE: {
-          type: Object,
-          default: function () {
-            return { message: 'Hello' }
-          }
+      // #2 the prop is passed in that needs to be transformed?
+      computed: {
+        normalizedSize: function () {
+          return this.size.trim().toLowercase()
         },
+      },
+    });
 
-        // Custom validator
-        procF: {
-          validator: function (value) {
-            return ['success', 'warning', 'data'].indexOf(value) !== -1;
-          }
-        },
-
-        // Type checking  #TODO Huh?? {readWorldUsage, intuitiveExpl} pls!
-        procG: {
-          author: HumanBeing
-        },
-      }
-    })
 
     var vm1 = new Vue({
       el: '#app-1',
-
+    
       data: {
-
       },
-
+    
       methods: {
-
       },
     });
   </script>
 
-  <style>
-    body {
-      margin: 1.65em;
-      line-height: 1.65em;
-    }
-
-    p,
-    div {
-      font-family: 'Fira Code', 'Verdana';
-    }
-
-    div {
-      margin: 7px;
-    }
-  </style>
 </body>
 
 </html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>04</title>
+</head>
+
+<body>
+    <div id="app-1">
+      <!-- 
+        [Non-Prop Attributes]
+        An attr that is passed to a comp, but doesn't have a correspond `prop` defined
+          ah, components can accept arbitrary attrs, which're added to the root element;
+          oh, we can freely add those "required attrs" which belongs to 3rd-party libs;
+
+        #TODO https://vuejs.org/v2/guide/components-props.html#Non-Prop-Attributes
+      -->
+
+      <bootstrap-date-input data-date-picker="activated">
+        <!-- Since I don't have any experiences yet, so I'll leave this right now. -->
+      </bootstrap-date-input>
+    </div>
+
+    <script>
+        
+    </script>
+</body>
