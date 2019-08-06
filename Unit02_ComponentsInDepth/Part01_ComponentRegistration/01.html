@@ -35,6 +35,10 @@
             .. // template & else
             components: { 'component-a': comp_a }
           }
+
+      Just so you know, better use <a-b-c> instead of <MyComponent>.
+        -- kebab-case
+        -- PascalCase
       
       There's a section I havn't do yet.  #TODO Finish this later.
       https://vuejs.org/v2/guide/components-registration.html#Automatic-Global-Registration-of-Base-Components
@@ -44,29 +48,43 @@
     Vue.component('glcomp-one', { template: '<span>Globl</span>' });
     Vue.component('glcomp-two', { template: '<span>Globl</span>' });
 
-    // Registered locally (in the `component` inside Vue's instance)
+    // Registered locally (as plain JS objects)
+    //  then choose what components you'd like to use in `components` sec.
     var lccomp_one = { template: '<span>Local</span>' };
     var lccomp_two = { template: '<span>Local</span>' };
 
+    // "lccomp_thr" stands for "local component three"
     var lccomp_thr = {
       template: '<span>Local</span>',
       components: {
         /*
-          For ES2015+ syntax, we would do it like this
-          >> import CompA from './CompA.vue'
+          For Vue.js syntax, it'll be like this
+          >> var CompA = { ... }
+          >> var CompB = {
+              components: {
+                'comp-a': CompA,  // the way you use other local comps
+                'comp-b': CompB,  // LEFT(templ|html) :: RIGHT(comp name)
+              }
+             }
+
+          For ES2015+ syntax, it'll be like this
+          >> import CompA from './CompA.vue'  // okay
+          >> import CompB from './CompB.js'   // okay
           >> export default {
           >>   components: {
           >>     CompA  // Now you can use 'CompA' in the current "component"!
+          >>     CompB  // do note that this 'CompC' is 
           >>   }
           >> }
 
-          The 'CompA' is a shorthand for 'CompA: CompA',
-          like the way we're doing right now (ah), do notice that
-              LEFT    the one you're using in template
-              RIGHT   the component's name from the 'XX.vue' file
+          More about ES2015+
+            The 'CompA' is a shorthand for 'CompA: CompA',
+            like the way we're doing right now (ah), do notice that
+            -- LEFT    the one you're using in template (custom tag)
+            -- RIGHT   the components imported from the 'XX.vue' file
         */
         'lccomp-one': lccomp_one, // Now you can use 'comp_one' inside '.._thr'
-        'lccomp-two': lccomp_two, // but do rember this isn't the only way!
+        'lccomp-two': lccomp_two, // but, do remember this is not the only way!
       }
     }
 
@@ -74,12 +92,13 @@
       el: '#app-1',
 
       data: {
-
+        // nothing else
+        // the rest of the tutorial is way too advanced for me.
       },
 
       components: {
         // Why registering components locally anyway?
-        // It mainly due to size-related issues.
+        // It mainly due to network/dl-size related issues.
         //  -> Webpack would build all the comps even some of them weren't using
         //  -> Users   would download some extra stuff (filesize of JavaScript)
         'lccomp-one': lccomp_one,
