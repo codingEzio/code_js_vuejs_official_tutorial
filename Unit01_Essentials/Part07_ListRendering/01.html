@@ -56,10 +56,10 @@
     <div v-for="inst in people" :key="inst.id" v-show="visibleOrNot">
       <!-- 
         It does the same thing even without the `v-bind:key`.
-        It'll make Vue able to <identify the nodes> (like the `key` in `<input>`?)
+        It'll make Vue be able to <identify the nodes> (like the `key` in `<input>`?)
        
         By the way,
-          It do HAVE other usages other than the `v-for`.
+          It does HAVE other usages other than the `v-for`.
         -->
     </div>
   </div>
@@ -71,8 +71,8 @@
           This part talks about the "array detection".
           That is, Vue itself will observe this (then trigger the view updates!).
 
-          Also, about the "returning new an array"
-          The cost is not that huge, it's actually quite efficient (author said).
+          Also about the "returning new an array",
+          the cost isn't that huge, it's actually quite efficient (words of author).
          -->
         <!-- Check the notes down below! (vm2 -> data) -->
         <li v-for="(inst, idx) of people">
@@ -184,7 +184,7 @@
           If you wanna add MULTIPLE props
           >> vm3.her_profile = Object.assign(
           >>   {},                     // meant to be NULL
-          >>   her_profile,            // the one you'll add to
+          >>   vm3.her_profile,        // the one you'll add to
           >>   { 
           >>     'gender' : 'female',  // new props       !
           >>     'country': 'USA'   ,  // new props again !

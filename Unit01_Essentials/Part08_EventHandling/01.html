@@ -59,7 +59,11 @@
         to be chained together (the "order" matters, though).
        -->
       <a @click.once.prevent='' href="https://google.com">
-        Access Google (you can't)
+        <!-- 
+          CLICK 1st time -> preventDefault
+          CLICK 2nd time -> works as normal
+         -->
+        Access Google (pls click more than once)
       </a>
       <form @submit.prevent=''>
         <button type="submit">Submit</button> <small>(deactivated)</small>
@@ -89,7 +93,8 @@
         To be clear, these keys are different from before.
         They have different behaviors between 'keyup' | '.ctrl'.
        -->
-      <input @keyup.ctrl.66="say('I pressed <Ctrl+B>!')"> <small>(press 'ctrl+b' then check console!)</small>
+      <input @keydown.ctrl.66="say('I pressed <Ctrl+B>!')"> <small>(press 'ctrl+b' check console! (keydown))</small><br>
+      <input @keyup.ctrl.66="say('I pressed <Ctrl+B>!')"> <small>(press 'ctrl+b' check console! (keyup))</small>
     </div>
 
     <div id="example-system-modifier-key-with-dot-exact">
@@ -102,6 +107,7 @@
       </button><br>
 
       <button @click.alt.exact="say('.alt & else')">
+        <!-- Not working properly right now -->
         alt( only) -> press
       </button><br><br>
     </div>

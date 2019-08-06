@@ -45,13 +45,22 @@
   <script>
     /* ------------------ Part 1 ------------------- */
 
+    // The easiest way'd be something like this:
+    //  <user-defined-comp post="Wow">  ... </user-defined-comp>
+    //  Pass the val (post as placeholder) through the template
     Vue.component('blog-post', {
-      // LEFT   :bind-XX    PROPS HERE
-      // RIGHT  "XXXX"      DYNAMIC
+      // The other way to do this'd be like this:
+      //  first, you have actual data in the `data` sec (hardcd or dynamic)
+      //  then you might wanna loop the data (e.g. x in X, key<>x.id, val<>x)
+      // So my conclusion is
+      //  => Everything in the left is kinda like "assigning roles" (for, uniquify)
+      //  => whereas in the right, the vars or the "vars" (kinda like aliases)(inst|post)
+      // Oh, one more thing about variables (inside `data`)
+      //  || inst in set => inst|post => post.title(tmpl) | inst.id(html-vue)
       props: ['post'],
 
       // Just a reminder here,
-      // the `v-html` treats the values as HTML code & then trans it.
+      // the `v-html` treats the values as HTML code and executes it.
       template: `
         <div class="blog-post">
           <span style="color: red">{{ post.title }}</span>

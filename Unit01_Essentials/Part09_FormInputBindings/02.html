@@ -24,6 +24,7 @@
         [2] <span style="color: green">{{ exp1_checkbox }}</span><br>
         [3] <span style="color: purple">{{ exp1_selectoption }}</span><br>
       </p>
+    </div>
 
       <div id="example-checkbox-with-true-values">
         <!-- 
@@ -36,8 +37,8 @@
 
       <div id="example-radio-bind-values">
         <!-- 
-          I don't really know what can this example do.
-          Here's an example: `vm1.exp3_radio === vm1.a` (=> true)
+          I don't really know what this example does.
+          Here's an example: `vm1.exp3_radio === vm1.exp3_a` (=> true)
          -->
         <input type="radio" v-model="exp3_radio" :value="exp3_a">
       </div>
@@ -53,8 +54,6 @@
           <option :value="{ number: 123 }">123</option>
         </select>
       </div>
-
-    </div>
   </div>
 
   <script>

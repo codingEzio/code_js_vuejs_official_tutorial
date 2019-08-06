@@ -22,7 +22,7 @@
           YES for <textarea v-model="text" ..>  </..>
           NO  for <textarea .. >  {{ text }}    </..>
        -->
-      <textarea v-model="message_exp2" placeholder="Write somethin'"></textarea>
+      <textarea v-model="message_exp2" placeholder="Write somethin' (multiline supported!)"></textarea>
       <br>
       <p style="white-space: pre-line;">
         {{ message_exp2 }}
@@ -94,7 +94,7 @@
       el: '#app-1',
 
       data: {
-        visibleOrNot: false,
+        visibleOrNot: true,
 
         message_exp1: '',
         message_exp2: '',
