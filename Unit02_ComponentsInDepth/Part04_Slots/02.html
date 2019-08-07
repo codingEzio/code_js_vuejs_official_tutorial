@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>02</title>
+  </head>
+
+  <body>
+    <div id="example-fallback-content">
+      <!-- 
+      The `slot` inside the template was kinda like providing a default value,
+        => no vals given  --  default
+        =>    vals given  --  use it then (still convey the same message)
+     -->
+      <submit-btn></submit-btn>
+      <submit-btn>Save</submit-btn>
+    </div>
+
+    <script>
+      Vue.component("submit-btn", {
+        props: ["url"],
+        template: `
+        <button type="submit">
+          <slot>Submit</slot>
+        </button>
+      `
+      });
+
+      new Vue({
+        el: "#example-fallback-content"
+      });
+    </script>
+
+    <style>
+      button {
+        display: inline-block;
+        padding: 15px 25px;
+        font-size: 20px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #4caf50;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+      }
+
+      button:hover {
+        background-color: #3e8e41;
+      }
+
+      button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+      }
+    </style>
+  </body>
+</html>

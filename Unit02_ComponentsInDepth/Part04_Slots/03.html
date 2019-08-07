@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>03</title>
+  </head>
+
+  <body>
+    <div id="example-named-slots">
+      <base-layout>
+        <template v-slot:header>
+          <h1>Here might be a page title</h1>
+        </template>
+
+        <!-- 
+          You can completely omit the `template` tag
+            if the "slot" you're using has no name (simply `<slot></slot>`)
+            just write the goddman HTML code (no name == name as `default`)
+        -->
+        <template v-slot:default>
+          <p>A paragraph</p>
+          <p>Another paragraph</p>
+        </template>
+
+        <!-- 
+          It'll only display one `main` part, don't worry about that
+            this one is a shorthand of the previous one `v-slot:` => `#`
+         -->
+        <template #default>
+          <p>xxx</p>
+          <p>XXXXXXX</p>
+        </template>
+
+        <template v-slot:footer>
+          <p>Here might be a footer</p>
+        </template>
+      </base-layout>
+    </div>
+
+    <script>
+      Vue.component("base-layout", {
+        template: `
+      <div class="container">
+        <header>
+          <slot name="header"></slot>
+        </header>
+        <main>
+          <slot></slot>
+        </main>
+        <footer>
+          <slot name="footer"></slot>
+        </footer>
+      </div>
+      `
+      });
+
+      new Vue({
+        el: "#example-named-slots"
+      });
+    </script>
+  </body>
+</html>

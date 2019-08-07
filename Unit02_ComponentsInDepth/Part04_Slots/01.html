@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>01</title>
+  </head>
+
+  <body>
+    <div id="slot-example">
+      <navigation-link url="/profile">
+        <i class="fa fa-blind" style="font-size:30px;color:lightskyblue"></i>
+        Your Profile<br />
+
+        <!-- 
+        Note that you cannot access the value of `url`,
+          => the `url` was passed into (parent) nav..-link
+          => not the child (where I'm right now, so-called child scope)
+
+        Digging more later in other books.
+       -->
+        <i class="fa fa-blind" style="font-size:30px;color:red"></i>
+        Your Profile {{ url }}
+      </navigation-link>
+    </div>
+
+    <script>
+      Vue.component("navigation-link", {
+        props: ["url"],
+
+        /*
+        Firstly, it's different from using `data: { return .. }` with `{{ }}`
+
+        Umm.. what would happen if you don't use the `<slot>..`?
+          => any content provided between its open/closing tag would be discarded
+      */
+        template: `
+        <a 
+          v-bind:href="url"
+          class="nav-link">
+          <slot></slot>
+        </a>
+      `
+      });
+
+      new Vue({
+        el: "#slot-example",
+        data: {}
+      });
+    </script>
+  </body>
+</html>

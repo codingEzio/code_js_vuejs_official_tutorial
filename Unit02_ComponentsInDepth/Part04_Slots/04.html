@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>04</title>
+  </head>
+
+  <body>
+    <div id="example-scoped-slot">
+      <current-user v-bind:user="user">
+        <!-- Accees the variable inside the parent scope -->
+        {{ user.firstName }}
+      </current-user>
+    </div>
+
+    <script>
+      Vue.component("current-user", {
+        template: `
+          <span>
+            <slot></slot>
+          </span>
+        `
+      });
+
+      new Vue({
+        el: "#example-scoped-slot",
+        data: {
+          user: {
+            firstName: "Jon",
+            lastName: "Doe"
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
