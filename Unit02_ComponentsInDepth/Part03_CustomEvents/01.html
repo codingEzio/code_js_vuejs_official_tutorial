@@ -10,26 +10,35 @@
 </head>
 
 <body>
-  <div id="app-1">
-    <div>
-
-    </div>
+  <div id="emit-example-simple">
+    <welcome-button v-on:readygo="sayHi"></welcome-button>
   </div>
 
   <script>
+    Vue.component('welcome-button', {
+      template: `
+        <button v-on:mouseup="$emit('readygo')">
+          Click me to be welcomed
+        </button>
+      `
+    })
 
-
-    var vm1 = new Vue({
-      el: '#app-1',
-
-      data: {
-
-      },
-
+    new Vue({
+      el: '#emit-example-simple',
       methods: {
+        /*
+          Here's a rough summary of "calling" `event`
+          || comp [def] <tag v-on:related-events-like-click="$emit('EMIT_NAME')"> .. </..>
+          || comp [use] <comptag v-on:EMIT_NAME="METHODS_IN_VUE_INSTANCE"> .. </..>
 
-      },
-    });
+          Some event names
+            https://www.w3schools.com/js/js_htmldom_events.asp
+        */
+        sayHi: function () {
+          alert('Hi!')
+        }
+      }
+    })
   </script>
 
   <style>
