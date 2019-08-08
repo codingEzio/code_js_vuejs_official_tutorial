@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>01</title>
+</head>
+
+<body>
+<div id="example-keepalive-with-dyn-comp">
+	<!--
+		[LINK] https://jsfiddle.net/chrisvfritz/Lp20op9o/
+	  This one extends further with real-world scenarios from the "Unit01-10-04.html".
+	  
+	  Maintaining the state when switching between the components.
+	  Still almost the same code as before, the only diff is `<keep-alive>` tag.
+	 -->
+	
+	<button
+		v-for="tab in tabs"
+		v-bind:key="tab"
+		v-bind:class="['tab-button', { active: currentTab === tab }]"
+		v-on:click="currentTab = tab"
+	>
+		{{ tab }}
+	</button>
+	
+	<!--
+		Quote from the official tutorial
+			"Note that it requires the components being switched between to all have names,
+			either using the name option on a component, or through local/global registration."
+	-->
+	<keep-alive>
+		<component
+			v-bind:is="currentTabComponent"
+			class="tab">
+		</component>
+	</keep-alive>
+</div>
+
+<script>
+		Vue.component("tab-posts", {
+				data: function () {
+						return {
+								posts: [
+										{
+												id: 1,
+												title: "Cat",
+												content: "<p>Cat Cat Cat Cat Cat<br>Cat Cat Cat Cat Cat</p>"
+										},
+										{
+												id: 2,
+												title: "Dog",
+												content: "<p>Dog Dog Dog Dog Dog<br>Dog Dog Dog Dog Dog</p>"
+										},
+										{
+												id: 3,
+												title: "Snake",
+												content: "<p>Snake Snake Snake Snake Snake<br>Snake Snake Snake Snake Snake</p>"
+										}
+								],
+								selectedPost: null
+						}
+				},
+				template: `
+            <div class="posts-tab">
+                <ul class="posts-sidebar">
+                    <li
+                        v-for="post in posts"
+                        v-bind:key="post.id"
+                        v-bind:class="{ selected: post === selectedPost }"
+                        v-on:click="selectedPost = post">
+                        {{ post.title }}
+                    >
+					</li>
+				</ul>
+				<div class="selected-post-container">
+					<div
+						v-if="selectedPost"
+						class="selected-post"
+					>
+						<h3>{{ selectedPost.title }}</h3>
+						<div v-html="selectedPost.content"></div>
+					</div>
+					<strong v-else>
+						Click on a blog title to the left to view it
+					</strong>
+				</div>
+			</div>
+            `
+		});
+		
+		Vue.component('tab-archive', {
+				template: '<div>Archive component</div>'
+		})
+		
+		new Vue({
+				el: "#example-keepalive-with-dyn-comp",
+				data: {
+						currentTab: "Posts",
+						tabs: ["Posts", "Archive"]
+				},
+				computed: {
+						currentTabComponent: function () {
+								return "tab-" + this.currentTab.toLowerCase()
+						}
+				}
+		});
+</script>
+
+<style>
+	.tab-button {
+		padding: 6px 10px;
+		border-top-left-radius: 3px;
+		border-top-right-radius: 3px;
+		border: 1px solid #ccc;
+		cursor: pointer;
+		background: #f0f0f0;
+		margin-bottom: -1px;
+		margin-right: -1px;
+	}
+	
+	.tab-button:hover {
+		background: #e0e0e0;
+	}
+	
+	.tab-button.active {
+		background: #e0e0e0;
+	}
+	
+	.tab {
+		border: 1px solid #ccc;
+		padding: 10px;
+	}
+	
+	.posts-tab {
+		display: flex;
+	}
+	
+	.posts-sidebar {
+		max-width: 40vw;
+		margin: 0;
+		padding: 0 10px 0 0;
+		list-style-type: none;
+		border-right: 1px solid #ccc;
+	}
+	
+	.posts-sidebar li {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		cursor: pointer;
+	}
+	
+	.posts-sidebar li:hover {
+		background: #eee;
+	}
+	
+	.posts-sidebar li.selected {
+		background: lightblue;
+	}
+	
+	.selected-post-container {
+		padding-left: 10px;
+	}
+	
+	.selected-post > :first-child {
+		margin-top: 0;
+		padding-top: 0;
+	}
+</style>
+</body>
+</html>
