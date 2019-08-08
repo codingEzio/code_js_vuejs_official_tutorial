@@ -15,13 +15,28 @@
       In this example, we'll talk about <strong>Dynamic Components</strong>.
     </p>
 
-    <button v-for="single_tab in tabs" :key="single_tab" :class="['tab-button', { active: currentTab === single_tab }]"
-      @click="currentTab = single_tab">
+    <!--
+      v-for   loop the tabs
+      :key    uniquify the tab (name/id)
+      :class  switching the class (CSS style)
+      @click  switching (the action)
+      {{ }}   switching (the tab name)
+    -->
+    <button
+        v-for="single_tab in tabs"
+        :key="single_tab"
+        :class="['tab-button', { active: currentTab === single_tab }]"
+        @click="currentTab = single_tab"
+    >
       {{ single_tab }}
     </button>
 
     <!-- 
       This tag makes all the MAGIC happen (switching components).
+      
+      :is="currentTabComponent
+        -- computing based on previous result (`button`)
+        -- the `class="tab"` is just a CSS style change (padding)
     -->
     <component :is="currentTabComponent" class="tab">
     </component>

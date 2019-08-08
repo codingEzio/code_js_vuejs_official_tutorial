@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>04_v2</title>
+</head>
+
+<body>
+<div id="example-dynamic-element-v2">
+	<!--
+		So this file is meant to provide another demonstration of the `:is` syntax,
+		but with "named components" (I guess)
+		
+		This one is nothing different from the prev one but the added `name` property.
+	-->
+	<button
+		v-for="tab in tabs"
+		v-bind:key="tab.name"
+		v-bind:class="['tab-button', { active: currentTab.name === tab.name }]"
+		v-on:click="currentTab = tab">
+		{{ tab.name }}
+	</button>
+	
+	<component
+		v-bind:is="currentTab.component"
+		class="tab">
+	</component>
+</div>
+
+<script>
+    const tabs = [
+        {
+            name: 'Home',
+            component: {
+                template: '<div>Home component</div>'
+            }
+        },
+        {
+            name: 'Posts',
+            component: {
+                template: '<div>Posts component</div>'
+            }
+        },
+        {
+            name: 'Archive',
+            component: {
+                template: '<div>Archive component</div>'
+            }
+        }
+    ];
+
+    new Vue({
+        el: "#example-dynamic-element-v2",
+        data: {
+            tabs: tabs,
+            currentTab: tabs[0]
+        }
+    });
+</script>
+
+<style>
+	.tab-button {
+		padding: 6px 10px;
+		border-top-left-radius: 3px;
+		border-top-right-radius: 3px;
+		border: 1px solid #ccc;
+		cursor: pointer;
+		background: #f0f0f0;
+		margin-bottom: -1px;
+		margin-right: -1px;
+	}
+	
+	.tab-button:hover {
+		background: #e0e0e0;
+	}
+	
+	.tab-button.active {
+		background: #e0e0e0;
+	}
+	
+	.tab {
+		border: 1px solid #ccc;
+		padding: 10px;
+	}
+</style>
+</body>
+</html>
