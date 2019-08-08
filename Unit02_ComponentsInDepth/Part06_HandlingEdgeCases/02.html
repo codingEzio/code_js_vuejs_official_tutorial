@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkUOdZ5y7hMm0yrcCQoCvLwzdM6M8s5qk"></script>
+	<script src="https://unpkg.com/vue"></script>
+	<title>02</title>
+</head>
+
+<body>
+<!--
+	Copied from         https://jsfiddle.net/chrisvfritz/ttzutdxh/
+	Possible scenario   https://vuejs.org/v2/guide/components-edge-cases.html#Accessing-the-Parent-Component-Instance
+-->
+<div id="access-parent-comp-instance">
+	<google-map>
+		<google-map-marker v-bind:places="vueConfCities">
+		</google-map-marker>
+	</google-map>
+</div>
+
+<script>
+		Vue.component("google-map", {
+				data: function () {
+						return {
+								map: null
+						}
+				},
+				mounted: function () {
+						this.map = new google.maps.Map(this.$el, {
+								center: {lat: 0, lng: 0},
+								zoom: 1
+						})
+				},
+				methods: {
+						getMap: function (found) {
+								var vm = this
+								
+								function checkForMap() {
+										if (vm.map) {
+												found(vm.map)
+										} else {
+												setTimeout(checkForMap, 50)
+										}
+								}
+								checkForMap()
+						}
+				},
+				template: '<div class="map"><slot></slot></div>'
+		});
+		
+		Vue.component("google-map-marker", {
+				props: ["places"],
+				created: function () {
+						var vm = this
+						vm.$parent.getMap(function (map) {
+								vm.places.forEach(function (place) {
+										new google.maps.Marker({
+												position: place.position,
+												map: map,
+										})
+								})
+						})
+				},
+				render(h) {
+						return null
+				}
+		});
+		
+		new Vue({
+				el: "#access-parent-comp-instance",
+				data: {
+						vueConfCities: [
+								{
+										name: 'Wrocław',
+										position: {
+												lat: 51.107885,
+												lng: 17.038538
+										}
+								},
+								{
+										name: 'New Orleans',
+										position: {
+												lat: 29.951066,
+												lng: -90.071532
+										}
+								}
+						]
+				}
+		});
+</script>
+
+<style>
+	.map {
+		width: 100%;
+		height: 400px;
+	}
+</style>
+</body>
+</html>

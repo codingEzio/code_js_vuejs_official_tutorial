@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>01</title>
+</head>
+
+<body>
+<div id="access-vues-root-instance">
+	<!--
+		This is definitely NOT the appropriate way to do it,
+			the author recommended using `https://vuex.vuejs.org` to manage state.
+	-->
+	this.$root.foo => {{ this.$root.foo }} <br>
+	this.$root.foo => {{ this.$root.foo = 2 }} <br>
+	this.$root.bar => {{ this.$root.bar }} <br>
+	this.$root.baz => {{ this.$root.baz() }} <br>
+</div>
+
+<script>
+		new Vue({
+				el: "#access-vues-root-instance",
+				data: {
+						foo:  1
+				},
+				computed: {
+						bar: function () {
+								return "Hello I'm bar (computed)"
+						}
+				},
+				methods: {
+						baz: function () {
+								return "Hello I'm baz (methods)"
+						}
+				}
+		});
+</script>
+
+<style>
+
+</style>
+</body>
+</html>
