@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>05</title>
+</head>
+
+<body>
+
+<script>
+	// It'll affect EVERY Vue instance created afterwards (dunno what does mean, sounds terrifying!)
+	// once you apply a mixin globally, use with caution!
+	Vue.mixin({
+		
+		// when used properly, it can be used to inject processing logic for custom options.
+		// ah, it's better to ship them as Plugins (globally add new func) to avoid the mess!
+		created: function () {
+			var myOption = this.$options.myOption
+			
+			if (myOption) {
+				console.log(myOption)
+			}
+		}
+	})
+	
+	// simply display what I give to it
+	new Vue({
+		myOption: 'Bonsoir, Eliot.'
+	})
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

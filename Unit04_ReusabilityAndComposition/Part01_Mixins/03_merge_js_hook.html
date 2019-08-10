@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>03</title>
+</head>
+
+<body>
+
+<script>
+	var mixin = {
+		created: function () {
+			console.log('mixin hooked called')
+		}
+	}
+	
+	new Vue({
+		// for those hook functions with the same name
+		// it'll be merged into an array so all of them will be called
+		mixins: [mixin],
+		
+		// hooks in the mixin will called before component's
+		created: function () {
+			console.log('component hook called')
+		}
+	})
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

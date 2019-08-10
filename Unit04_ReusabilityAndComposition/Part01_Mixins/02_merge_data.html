@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>02</title>
+</head>
+
+<body>
+
+<script>
+	var mixin = {
+		data: function () {
+			return {
+				message: 'hello',
+				foo: 'abc'
+			}
+		}
+	}
+	
+	// this is a component! (distinguish by `data`)
+	new Vue({
+		mixins: [mixin],
+		
+		// the component's data will take priority while merging the data
+		data: function () {
+			return {
+				message: 'goodbye',
+				bar: 'def'
+			}
+		},
+		created: function () {
+			console.log(this.$data)
+		}
+	});
+</script>
+
+</body>
+</html>

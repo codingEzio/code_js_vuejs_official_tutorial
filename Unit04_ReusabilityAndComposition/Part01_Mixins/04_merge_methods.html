@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>04</title>
+</head>
+
+<body>
+
+<script>
+	var mixin = {
+		methods: {
+			foo: function () {
+				console.log('foo')
+			},
+			conflicting: function () {
+				console.log('from mixin')
+			}
+		}
+	}
+	
+	var vm = new Vue({
+		// options that expect obj values like `methods`, `components`
+		// will be merged into the same object (we'll take it all, baby)
+		mixins: [mixin],
+		
+		// the comp's options'll take priority when there're conflicting keys
+		//  I don't have it   ->  now it's mine
+		//  We're the same?   ->  I'm the boss!
+		methods: {
+			bar: function () {
+				console.log('bar')
+			},
+			conflicting: function () {
+				console.log('from self')
+			}
+		}
+	})
+	
+	// Just so you know, the same merge strategies
+	// are also used in `Vue.extend` (another way to create component)
+	vm.foo()
+	vm.bar()
+	vm.conflicting()
+</script>
+
+<style>
+
+</style>
+</body>
+</html>
