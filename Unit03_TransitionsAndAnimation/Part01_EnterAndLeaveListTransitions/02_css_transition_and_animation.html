@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://unpkg.com/vue"></script>
+	<title>0</title>
+</head>
+
+<body>
+<div id="demo-css-transitions">
+	<button @click="show = !show">
+		Toggle render
+	</button>
+	<transition name="slide-fade">
+		<p v-if="show">Hello</p>
+	</transition>
+</div>
+
+<div id="demo-css-animations">
+	<button @click="show = !show">
+		Toggle show
+	</button>
+	<transition name="bounce">
+		<p v-if="show">
+			CSS animations are applied in the same way as CSS transitions,
+			the difference being that v-enter is not removed
+			immediately after the element is inserted, but on an animationend event.
+		</p>
+	</transition>
+</div>
+
+<script>
+	new Vue({
+		el: '#demo-css-transitions',
+		data: {
+			show: true
+		}
+	})
+	
+	new Vue({
+		el: '#demo-css-animations',
+		data: {
+			show: true
+		}
+	})
+</script>
+
+<style>
+	/* CSS Transitions */
+	.slide-fade-enter-active {
+		transition: all .3s ease;
+	}
+	
+	.slide-fade-leave-active {
+		transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+	}
+	
+	.slide-fade-enter, .slide-fade-leave-to {
+		transform: translateX(10px);
+		opacity: 0;
+	}
+	
+	/* CSS Animations */
+	.bounce-enter-active {
+		animation: bounce-in .5s;
+	}
+	
+	.bounce-leave-active {
+		animation: bounce-in .5s reverse;
+	}
+	
+	@keyframes bounce-in {
+		0% {
+			transform: scale(0);
+		}
+		50% {
+			transform: scale(1.5);
+		}
+		
+		100% {
+			transform: scale(1);
+		}
+	}
+</style>
+</body>
+</html>

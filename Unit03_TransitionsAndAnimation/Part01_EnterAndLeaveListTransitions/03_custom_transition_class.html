@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://unpkg.com/vue"></script>
+	<link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+	<title>0</title>
+</head>
+
+<body>
+<!--Custom Transition Classes-->
+<div id="demo-custom-transition-class">
+	<button @click="show = !show">
+		Toggle render
+	</button>
+	
+	<!--
+	    Oh, I guess the `name` is actually not that useful,
+	    if you're using your own CSS animations (e.g. external CSS library).
+	    
+	    The values inside the last two props belong to the "Animate.css" lib.
+	 -->
+	<transition
+		name="custom-classes-transition"
+		enter-active-class="animated jello"
+		leave-active-class="animated bounceOutRight"
+	>
+		<p v-if="show">Hello</p>
+	</transition>
+</div>
+
+<script>
+	new Vue({
+		el: "#demo-custom-transition-class",
+		data: {
+			show: true
+		}
+	});
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

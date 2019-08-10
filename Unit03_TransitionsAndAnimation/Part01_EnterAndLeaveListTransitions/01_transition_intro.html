@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://unpkg.com/vue"></script>
+	<title>01</title>
+</head>
+
+<body>
+<div id="demo-single-comp-hideandshow">
+	<button v-on:click="show = !show">
+		Toggle
+	</button>
+	
+	<!-- Animations could impl the similar stuff like `transitions`. -->
+	<transition name="fade">
+		<p v-if="show">hello</p>
+	</transition>
+</div>
+
+<script>
+	new Vue({
+		el: "#demo-single-comp-hideandshow",
+		data: {
+			show: true
+		}
+	});
+</script>
+
+<style>
+	/* This part is related to `transition name="fade"` */
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity 0.5s;
+	}
+	
+	.fade-enter, .fade-leave-to {
+		opacity: 0;
+	}
+</style>
+</body>
+</html>
