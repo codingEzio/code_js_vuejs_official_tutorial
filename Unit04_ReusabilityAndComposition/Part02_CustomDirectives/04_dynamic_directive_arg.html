@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>04</title>
+</head>
+
+<body>
+<div id="baseexample">
+	<h3>[base] Scroll down inside this section⬇️</h3>
+	<p v-pin="150">[base] Stick me 150px from the top of the page</p>
+</div>
+
+<div id="dynamicexample">
+	<h3>[dyn] Scroll down inside this section⬇️</h3>
+	<p v-dynpin:[direction]="150">[dyn] I am pinned onto the page at 150px to the bottom side.</p>
+</div>
+
+<div id="dynamicexample-color">
+	<p v-dyn-switchcolor="bgColor">Hello</p>
+</div>
+
+<div id="dynamicexample-multiarg">
+	<p v-dyn-multiarg="{ content: 'hello from mularg', ftstyle: 'italic' }"></p>
+</div>
+
+<script>
+	Vue.directive('pin', {
+		bind: function (el, binding, vnode) {
+			el.style.position = 'fixed'
+			el.style.top = binding.value + 'px'
+		}
+	})
+	
+	Vue.directive('dynpin', {
+		bind: function (el, binding, vnode) {
+			el.style.position = 'fixed'
+			
+			var s = (binding.arg == 'top' ? 'top' : 'bottom')
+			el.style[s] = binding.value + 'px'
+		}
+	})
+	
+	Vue.directive('dyn-switchcolor', function (el, binding) {
+		el.style.backgroundColor = binding.value
+		el.style.direction = 'rtl'
+	})
+	
+	Vue.directive('dyn-multiarg', function (el, binding) {
+		el.innerText = binding.value.content
+		el.style.fontStyle = binding.value.ftstyle
+	})
+	
+	new Vue({
+		el: "#baseexample",
+		data: {},
+	});
+	
+	new Vue({
+		el: "#dynamicexample",
+		data: function () {
+			return {
+				direction: 'bottom'
+			}
+		},
+	});
+	
+	new Vue({
+		el: "#dynamicexample-color",
+		data: function () {
+			return {
+				bgColor: 'red'
+			}
+		}
+	})
+	
+	new Vue({
+		el: '#dynamicexample-multiarg',
+		data: function () {
+			return {
+			
+			}
+		}
+	})
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

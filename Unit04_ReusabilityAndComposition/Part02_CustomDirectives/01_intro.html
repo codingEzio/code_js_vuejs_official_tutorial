@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>01</title>
+</head>
+
+<body>
+<div id="app">
+	<!--
+	    What is a "directive"?      Stuff like `v-model`, provided by Vue core
+	    What does it can do  ?      Cases where u need some low-level DOM access on plain elm
+	 -->
+	
+	<!--<global-directive-focus></global-directive-focus>-->
+	<local-directive-focus></local-directive-focus>
+</div>
+
+<script>
+	// globally registered directive (use it in template)
+	Vue.directive('globalfocus', {
+		inserted: function (el) {
+			el.focus()
+		}
+	})
+	
+	// just a side note about `name`
+	//  it's not mandatory, but surely helpful when debugging it (e.g. vue-dev-tools)
+	Vue.component('global-directive-focus', {
+		name: 'focused-input-global',
+		template: '<div><input type="search" v-globalfocus></div>'
+	})
+	
+	Vue.component('local-directive-focus', {
+		name: 'focused-input-local',
+		directives: {
+			localfocus: {
+				inserted: function (el) {
+					el.focus()
+				}
+			}
+		},
+		template: '<div><input type="search" v-localfocus></div>',
+	})
+	
+	// Make sure all the definitions being put before this instance!!
+	new Vue({
+		el: '#app'
+	})
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>02</title>
+</head>
+
+<body>
+<div id="app">
+	<my-comp v-if="msg" v-bind:msg="msg"></my-comp>
+	<button v-on:click="update">update</button>
+	<button v-on:click="uninstall">uninstall</button>
+	<button v-on:click="install">install</button>
+</div>
+
+<script>
+	// https://vuejs.org/v2/guide/custom-directive.html#Hook-Functions
+	Vue.directive('debughooks', {
+		bind: function (el) {
+			console.log(el.parentNode)
+			console.log('bind')
+		},
+		inserted: function (el) {
+			console.log(el.parentNode)
+			console.log('inserted')
+		},
+		update: function (el) {
+			console.log(el.innerHTML)
+			console.log('update')
+		},
+		componentUpdated: function (el) {
+			console.log(el.innerHTML)
+			console.log('componentUpdated')
+		},
+		unbind: function (el) {
+			console.log('unbind')
+		}
+	})
+	
+	var myComp = {
+		template: '<h1 v-debughooks>{{ msg }}</h1>',
+		props: {
+			msg: String
+		}
+	}
+	
+	new Vue({
+		el: "#app",
+		data: {
+			msg: 'hello'
+		},
+		components: {
+			myComp: myComp
+		},
+		methods: {
+			update: function () {
+				this.msg = 'Hi'
+			},
+			uninstall: function () {
+				this.msg = ''
+			},
+			install: function () {
+				this.msg = 'Hello'
+			}
+		}
+	});
+</script>
+
+<style>
+
+</style>
+</body>
+</html>
