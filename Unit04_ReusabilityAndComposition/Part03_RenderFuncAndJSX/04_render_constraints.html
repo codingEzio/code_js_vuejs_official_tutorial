@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>04</title>
+</head>
+
+<body>
+<div id="app">
+	<demo-for-mustbe-unique-vnodes></demo-for-mustbe-unique-vnodes>
+	<demo-for-mustbe-unique-vnodes-better-way></demo-for-mustbe-unique-vnodes-better-way>
+</div>
+
+<script>
+    Vue.config.productionTip = false;
+
+    Vue.component('demo-for-mustbe-unique-vnodes', {
+        render: function (createElement) {
+            var myParaVNode = createElement('p', 'Hooray!');
+
+            // All VNodes in the comp tree MUST BE unique.
+	        //  simply put, you cannot write sth like code down below
+            return createElement(
+                'div',
+                [
+                    myParaVNode,
+                    myParaVNode,
+                ]
+            );
+        }
+    });
+
+    Vue.component('demo-for-mustbe-unique-vnodes-better-way', {
+        render: function (createElement) {
+            return createElement(
+                'div',
+                
+                // In technical terms, this way could be called as "factory function".
+                Array.apply(null, {length: 3}).map(function () {
+                    return createElement(
+                        'p',
+                        {
+                            style: {
+                                color: 'orange'
+                            }
+                        },
+                        'Hoooooooooray'
+                    );
+                })
+            );
+        }
+    });
+
+    new Vue({
+        el: "#app",
+        data: {},
+    });
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

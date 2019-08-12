@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>01</title>
+</head>
+
+<body>
+<div id="app">
+	<anchored-heading :level="1">Hello idiot🙃</anchored-heading>
+	<anchored-heading :level="2">Hello idiot🙃</anchored-heading>
+	<anchored-heading :level="3">Hello idiot🙃</anchored-heading>
+	
+	<anchored-heading-using-render :level="4">Hey guys😝</anchored-heading-using-render>
+	<anchored-heading-using-render :level="5">Hey guys😝</anchored-heading-using-render>
+	<anchored-heading-using-render :level="6">Hey guys😝</anchored-heading-using-render>
+</div>
+
+<script type="text/x-template" id="anchored-heading-template">
+	<h1 v-if="level === 1">
+		<slot></slot>
+	</h1>
+	<h2 v-else-if="level === 2">
+		<slot></slot>
+	</h2>
+	<h3 v-else-if="level === 3">
+		<slot></slot>
+	</h3>
+	<h4 v-else-if="level === 4">
+		<slot></slot>
+	</h4>
+	<h5 v-else-if="level === 5">
+		<slot></slot>
+	</h5>
+	<h6 v-else-if="level === 6">
+		<slot></slot>
+	</h6>
+</script>
+
+<script>
+    Vue.component('anchored-heading', {
+        template: '#anchored-heading-template', // inline-tmpl plus slot
+        props: {
+            level: {
+                type: Number,
+                required: true
+            }
+        }
+    });
+
+    Vue.component('anchored-heading-using-render', {
+        // The core concept is the `this.$slots`
+	    //  -- `this`   means   "access THIS component's data"
+	    //  -- $slots   means   "a big object contains the content of slots"
+	    //  -- default  means   "all slots except those named one (A.B.header)"
+        render: function (createElement) {
+            // related API docs' content
+	        //  https://vuejs.org/v2/api/#vm-slots
+            return createElement(
+                'h' + this.level,   // tag name
+                this.$slots.default // array of children
+            );
+        },
+        props: {
+            level: {
+                type: Number,
+                required: true
+            }
+        }
+    });
+
+    // This one is necessary!
+    new Vue({
+        el: '#app'
+    });
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

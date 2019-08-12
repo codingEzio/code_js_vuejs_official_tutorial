@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>03</title>
+</head>
+
+<body>
+<div id="app">
+	<anchored-heading :level="1">H</anchored-heading>
+	<anchored-heading :level="2">He</anchored-heading>
+	<anchored-heading :level="3">Hel</anchored-heading>
+	<anchored-heading :level="4">Hell</anchored-heading>
+	<anchored-heading :level="5">Hello</anchored-heading>
+</div>
+
+<script>
+    var getChildrenTextContent = function (children) {
+        return children.map(function (node) {
+            return node.children
+                ? getChildrenTextContent(node.children)
+                : node.text;
+        }).join();
+    };
+
+    Vue.component('anchored-heading', {
+        render: function (createElement) {
+            var headingId = getChildrenTextContent(this.$slots.default)
+                .toLowerCase()
+                .replace(/\W+/g, '-')
+                .replace(/(^-|-$)/g, '');
+
+            return createElement(
+                'h' + this.level,
+                [
+                    createElement('a', {
+                        attrs: {
+                            name: headingId,
+                            href: '#' + headingId
+                        }
+                    }, this.$slots.default)
+                ]
+            );
+        },
+        props: {
+            level: {
+                type: Number,
+                required: true
+            }
+        }
+    });
+
+    new Vue({
+        el: "#app",
+        data: {},
+    });
+</script>
+
+<style>
+	* {
+		font-family: "Alte DIN 1451 Mittelschrift";
+		zoom: 110%; /* my-125% * zoom-110% */
+	}
+</style>
+</body>
+</html>

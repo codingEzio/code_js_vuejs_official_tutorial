@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>02</title>
+</head>
+
+<body>
+<div id="app">
+	<walkthrough-createelm-args></walkthrough-createelm-args>
+	
+	<hello></hello>
+</div>
+
+<script>
+    Vue.component('walkthrough-createelm-args', {
+        // @returns {VNode}
+        render: function (createElement) {
+            return createElement(
+                // the outermost HTML tag
+                'div',
+
+                // we talk about this part in the next component
+                {},
+
+                // bunch of Children VNodes
+                [
+                    '[01] Some text comes first',
+                    createElement('h1', '[01] A headline'),
+                    createElement('p', '[01] Some text comes last'),
+                    createElement('hr'),
+                ]
+            );
+        }
+    });
+
+    Vue.component('hello', {
+        render: function (createElement) {
+            return createElement(
+                "span",
+                {
+                    attrs: {
+                        id: 'foo',
+                    },
+                    class: {
+                        // Equals to `v-bind:class`
+                        foo: true,
+                        bar: true,
+                    },
+                    style: {
+                        // Equals to `v-bind:style`
+                        color: 'hotpink',
+                        fontSize: '1em',
+                    },
+                    on: {
+                        // This is just an example, you can use other methods though.
+                        //  like `v-on:METHODS` but can't use "modifiers" like `v-on:keyup.enter`
+                        click: function (event) {
+                            alert('clicked');
+                        }
+                    },
+                    nativeOn: {
+                        // For comp only. Allow u to listen to native events,
+                        //  rather than events emitted from the comp using `vm.$emit`
+                        x: function () {
+                            // I don't really understand this one }
+                        }
+                    },
+                    props: {
+                        // Still've no idea what does this do
+                        myProp: 'baz',
+                    },
+                    domProps: {
+                        // Check this out: https://www.w3schools.com/jsref/dom_obj_all.asp
+                        // innerHTML: 'baz',
+                        // id: 'hello fucker'
+                    },
+                    directives: [
+                        // No idea about how this could be used
+                        {
+                            name: 'my-custom-directive',
+                            value: '2',
+                            expression: '1 + 1',
+                            arg: 'foo',
+                            modifiers: {
+                                bar: true
+                            }
+                        }
+                    ],
+                    scopedSlots: {
+                        // Some reference links
+                        //  https://codepen.io/autumnwoodberry/pen/jwjMEj?editors=0010
+                        //  https://forum.vuejs.org/t/using-scoped-slots-in-a-render-function/3622/3
+                        default: props => createElement('span', props.text)
+                    },
+	                // Still, no idea about these three objs
+                    key: 'myKey',
+                    ref: 'myRef',
+                    refInFor: true
+                },
+                [
+                    createElement('h1', '[02] A headline'),
+                    createElement('p', '[02] Some text comes last'),
+                    createElement('hr'),
+                ]
+            );
+        }
+    });
+
+    new Vue({
+        el: "#app",
+        data: {},
+    });
+</script>
+
+<style>
+
+</style>
+</body>
+</html>
