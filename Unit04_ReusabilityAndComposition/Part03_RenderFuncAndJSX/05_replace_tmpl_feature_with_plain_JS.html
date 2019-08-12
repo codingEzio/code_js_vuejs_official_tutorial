@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>05</title>
+</head>
+
+<body>
+<div id="app">
+	<div>
+		<ul v-if="items.length">
+			<li v-for="item in items">
+				{{ item.name }}
+			</li>
+		</ul>
+		<p v-else>No items found.</p>
+		
+		<alternative-to-v-if :items="items"></alternative-to-v-if>
+		<hr>
+	</div>
+	
+	<div>
+		<input v-model="vmodel_msg" placeholder="Enter a message">
+		<p>Message is: {{ vmodel_msg }}</p>
+		
+		<alternative-to-v-model v-model="vmodel_msg_using_render"
+		                        placeholder="Enter a message"></alternative-to-v-model>
+		<p>Message is: {{ vmodel_msg_using_render }}</p>
+		<hr>
+	</div>
+	
+	<div>
+		<!-- Just ignore this one! -->
+		<p><em>
+			<del>Event modifiers</del>
+		</em></p>
+		<alternative-to-event-modifiers></alternative-to-event-modifiers>
+		<hr>
+	</div>
+	
+	<div>
+		<alternative-to-slot-default>Hello</alternative-to-slot-default>
+		<alternative-to-slot-named>HeyYo</alternative-to-slot-named>
+		<hr>
+	</div>
+</div>
+
+<script>
+    Vue.config.productionTip = false;
+
+    // Some useful links (for me & other people)
+    //  https://alligator.io/vuejs/introduction-render-functions/
+
+    Vue.component('alternative-to-v-if', {
+        props: ['items'],
+        render: function (createElement) {
+            if (this.items.length) {
+                return createElement('ul', this.items.map(function (item) {
+                    return createElement('li', item.name);
+                }));
+            } else {
+                return createElement('p', 'No items found.');
+            }
+        },
+    });
+
+    Vue.component('alternative-to-v-model', {
+        // Now I kinda grasp the `data` prop a litle bit
+        //  as long as the variable being initiated (`data` in Vue's instance)
+        //  as for component's `props`, use whatever u want!! (do match the amount of args though)
+        props: ['value'],
+
+        render: function (createElement) {
+            const self = this;
+
+            return createElement('input', {
+                domProps: {
+                    value: self.value
+                },
+                on: {
+                    input: function (event) {
+                        self.$emit('input', event.target.value);
+                    }
+                }
+            });
+        }
+    });
+
+    Vue.component('alternative-to-event-modifiers', {
+        // I have no idea how this works (render's way)
+        //  https://vuejs.org/v2/guide/render-function.html#Event-amp-Key-Modifiers
+        render: function (createElement) {
+            return createElement();
+        }
+    });
+
+    Vue.component('alternative-to-slot-default', {
+        render: function (createElement) {
+            return createElement(
+                'h1',
+                this.$slots.default
+            );
+        }
+    });
+
+    // #TODO Havn't finished yet (examples of `slot`)
+    //  https://vuejs.org/v2/guide/render-function.html#Slots
+    //  https://joefly.site/pages/projects/vuejs2-advanced/04.render-functions.html
+
+    // #TODO Next section :: https://vuejs.org/v2/guide/render-function.html#JSX
+    
+    new Vue({
+        el: "#app",
+        data: {
+            items: [
+                {id: 1, name: "Alex"},
+                {id: 2, name: "Bobo"},
+                {id: 3, name: "Cezk"},
+            ],
+            vmodel_msg: '',
+            vmodel_msg_using_render: '',
+            evtmodifier_content: '',
+        },
+    });
+</script>
+
+<style>
+
+</style>
+</body>
+</html>
