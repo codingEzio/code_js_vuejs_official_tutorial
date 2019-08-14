@@ -4,7 +4,7 @@
 	<meta charset="UTF-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue"></script>
 	<title>05</title>
 </head>
 
@@ -43,8 +43,23 @@
 	
 	<div>
 		<alternative-to-slot-default>Hello</alternative-to-slot-default>
-		<alternative-to-slot-named>HeyYo</alternative-to-slot-named>
+		
+		<alternative-to-slot-scoped>
+			<template v-slot:default="what">
+				<span>Hi (content given by me)</span>
+				<br><span>{{ what.text }}</span> (default)
+				<br><span>{{ what.numb }}</span> (default)
+			</template>
+		</alternative-to-slot-scoped>
 		<hr>
+	</div>
+	
+	<div>
+		<alternative-to-scopedslot-pass-to-childcomp-parent>
+			<template v-slot:default="haha">
+				<p>haha.text</p>
+			</template>
+		</alternative-to-scopedslot-pass-to-childcomp-parent>
 	</div>
 </div>
 
@@ -68,7 +83,7 @@
     });
 
     Vue.component('alternative-to-v-model', {
-        // Now I kinda grasp the `data` prop a litle bit
+        // Now I kinda grasp the `data` prop a little bit
         //  as long as the variable being initiated (`data` in Vue's instance)
         //  as for component's `props`, use whatever u want!! (do match the amount of args though)
         props: ['value'],
@@ -106,12 +121,57 @@
         }
     });
 
-    // #TODO Havn't finished yet (examples of `slot`)
-    //  https://vuejs.org/v2/guide/render-function.html#Slots
-    //  https://joefly.site/pages/projects/vuejs2-advanced/04.render-functions.html
+    Vue.component('alternative-to-slot-scoped', {
+        render: function (createElement) {
+            return createElement(
+                'p',
+                [
+                    // This "scoped slot" is actually nothing different from the prev one,
+                    // See this one [ A.B.C({}) ]
+                    //  [ ]  =>  a list of returning values
+                    //  { }  =>  pass in an object ({} makes an block into an obj, in here)
+                    //  A:B  =>  provided by the `data` sec inside the comp, used by `<template v-slot=?`
+                    this.$scopedSlots.default({
+                        text: this.message,
+                        numb: this.num_msg,
+                    })
+                ]
+            );
+        },
+        data: function () {
+            return {
+                message: 'hello from scope-slots! (powered by `render`)',
+                num_msg: '66666 from scope-slots! (powered by `render`)'
+            };
+        }
+    });
+
+    Vue.component('alternative-to-scopedslot-pass-to-childcomp-child', {
+        template: '<p>This is the child</p>'
+    });
+
+    Vue.component('alternative-to-scopedslot-pass-to-childcomp-parent', {
+        render: function (createElement) {
+            return createElement(
+                'div',
+                [
+                    this.$scopedSlots.default({
+                        text: this.message
+                    }),
+                    createElement('alternative-to-scopedslot-pass-to-childcomp-child', {
+                        scopedSlots: {
+                            default: function (haha) {
+                                return createElement('span', haha.text);
+                            }
+                        }
+                    })
+                ]
+            );
+        }
+    });
 
     // #TODO Next section :: https://vuejs.org/v2/guide/render-function.html#JSX
-    
+
     new Vue({
         el: "#app",
         data: {
