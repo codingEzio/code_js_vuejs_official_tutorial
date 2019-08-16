@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>04</title>
+</head>
+
+<body>
+<div id="app">
+	<div>
+		{{ "Haha" | repeat }} <br>
+		{{ "Haha" | repeat(3) }} <br>
+		<hr>
+	</div>
+	
+	<div>
+		{{ [20, 20, 10, 30, 50] | uniquify }}
+		<hr>
+	</div>
+	
+	<div>
+		1st: {{ [10, 20, 30] | first_one }} <br>
+		last: {{ [10, 20, 30] | last_one }} <br>
+		shuffled: {{ [10, 20, 30] | shuffle }} <br><br>
+		
+		minimum: {{ [100, 2, 30] | min_one }} <br>
+		index_val: {{ [100, 2, 30] | index_val(0) }}
+		<hr>
+	</div>
+	
+	<div>
+		plucked id: {{ user_list | pluck('id') }} <br>
+		plucked fname: {{ user_list | pluck('fname') }} <br>
+		plucked lname: {{ user_list | pluck('lname') }}
+	</div>
+</div>
+
+<script>
+    Vue.config.productionTip = false;
+
+    // Still based on this website (more examples)
+    //  https://scotch.io/tutorials/how-to-create-filters-in-vuejs-with-examples
+
+    Vue.filter('pluck', (objects, key) => {
+        {
+            return objects.map((object) => {
+                return object[key];
+            });
+        }
+    });
+
+    new Vue({
+        el: "#app",
+        data: {
+            user_list: [
+                {"id": 1, "fname": "Eva", "lname": "Hans"},
+                {"id": 2, "fname": "Joe", "lname": "Doug"},
+                {"id": 3, "fname": "San", "lname": "Joes"},
+            ]
+        },
+        filters: {
+            repeat: (a_string, times = 1) => {
+                return a_string.repeat(times);
+            },
+            uniquify: function (values) {
+                return values.filter(function (element, index, self) {
+                    return index === self.indexOf(element);
+                });
+            },
+            last_one: (values) => {
+                if (Array.isArray(values)) {
+                    return values[values.length - 1];
+                }
+                return values;
+            },
+            first_one: (values) => {
+                if (Array.isArray(values)) {
+                    return values[0];
+                }
+                return values;
+            },
+            shuffle: (values) => {
+                for (let i = values.length - 1; i > 0; i--) {
+                    let j = Math.floor(Math.random() * (i + 1));
+
+                    let temp = values[i];
+                    values[i] = values[j];
+                    values[j] = temp;
+                }
+
+                return values;
+            },
+            min_one: (values) => {
+                return Math.min(...values);
+            },
+            index_val: (values, index) => {
+                return values[index];
+            }
+        }
+    });
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

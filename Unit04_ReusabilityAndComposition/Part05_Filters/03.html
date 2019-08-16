@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>03</title>
+</head>
+
+<body>
+<div id="app">
+	<div>
+		<p>{{ 351.99 | glb_toUSD }}</p>
+		<p>{{ price_for_glb_toUSD | glb_toUSD }}</p>
+		<p>{{ price_for_glb_toUSD | glb_toFixed(0) | glb_toUSD }}</p>
+		<p>{{ price_for_glb_toUSD | glb_toFixed(1) | glb_toUSD }}</p>
+		
+		<hr>
+		<p>{{ "351.99" | glb_toUSD }}</p>
+		<p>{{ "hellowd" | glb_toUSD }}</p>
+		<hr>
+	</div>
+	
+	<div>
+		<p>{{ "alright" | upper }}, {{ "ALRIGHT" | lower}}</p>
+		<hr>
+	</div>
+	
+	<div>
+		<p>{{ quote_for_glb_readMore | glb_readMore(5, '...') }}</p>
+		<p>{{ quote_for_glb_readMore | glb_readMore(15, '...') }}</p>
+		<hr>
+	</div>
+	
+	<div>
+		<p>{{ example_user_for_glb_toJSON | glb_toJSON }}</p>
+	
+	
+	</div>
+</div>
+
+<script>
+    Vue.config.productionTip = false;
+
+    // These examples are mostly based on ↓
+    //  https://scotch.io/tutorials/how-to-create-filters-in-vuejs-with-examples
+
+    // What's the difference between global & local filters?
+    //  well, this term is specifically coined for single-filed Vue file
+    //  that is, a Vue project created by 'vue-cli' (or else) (e.g. App.vue)
+
+    // The core differences
+    //  global  available across all comp       defined in 'main.js' (Vue.filter)
+    //  local   only available inside the comp  defined in `xxx.vue` (filters: {..})
+
+    // It's no big differences if you're writing code like me doing right now
+    //  since this file itself is self-contained & no relationship with others.
+
+    Vue.filter('glb_toFixed', function (price, limit) {
+        return price.toFixed(limit);
+    });
+
+    Vue.filter('glb_toUSD', function (price) {
+        return `$${price}`;
+    });
+
+    Vue.filter('glb_readMore', function (text, length, suffix) {
+        return text.substring(0, length) + suffix;
+    });
+
+    Vue.filter('glb_toJSON', function (value) {
+        return JSON.stringify(value);
+    });
+
+    new Vue({
+        el: "#app",
+        data: {
+            price_for_glb_toUSD: 351.99,
+            quote_for_glb_readMore: 'The more congenial page of some tenth-rate poeticule worn out with failure after failure and now squat in his hole like the tailless fox, he is curled up to snarl and whimper beneath the inaccessible vine of song.',
+            example_user_for_glb_toJSON: {
+                username: 'john doe',
+                email: 'york@example.com',
+                country: 'Canada',
+            }
+        },
+        filters: {
+            upper: (value) => {
+                return value.toUpperCase();
+            },
+            lower: (value) => {
+                return value.toLowerCase();
+            },
+        }
+    });
+</script>
+
+<style>
+
+</style>
+</body>
+</html>

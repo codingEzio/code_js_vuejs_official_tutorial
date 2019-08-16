@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>02</title>
+</head>
+
+<body>
+<div id="app">
+	
+	<p>Hi {{ xx | fallback }}</p>
+	<p>Hi {{ name | fallback }}</p>
+	<p>Hi {{ "Jenny" | fallback }}</p>
+	
+	<hr>
+	
+	<p>Hi {{ xx | fallback | prepend('Dr.') }}</p>
+	<p>Hi {{ name | fallback | prepend('Dr.') }}</p>
+	<p>Hi {{ "Jenny" | fallback | prepend('Dr.') }}</p>
+</div>
+
+<script>
+    Vue.config.productionTip = false;
+
+    // Common filters
+    //  https://www.npmjs.com/package/vue2-filters
+
+    new Vue({
+        el: "#app",
+        data: {
+            name: "Bob"
+        },
+        filters: {
+            fallback: (name) => {
+                return name ? name : 'there';
+            },
+            prepend: (name, prefix) => {
+                if (name !== "there") {
+                    return `${prefix} ${name}`;
+                } else {
+                    return name;
+                }
+            },
+        }
+    });
+</script>
+
+<style>
+
+</style>
+</body>
+</html>
