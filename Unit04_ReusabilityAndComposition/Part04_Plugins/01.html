@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<title>0</title>
+</head>
+
+<body>
+<div id="component1">
+	<button @click="$myPlugin.state.count++">
+		+++
+	</button>
+	{{ $myPlugin.state.count }}
+</div>
+
+<div id="component2">
+	<button @click="$myPlugin.state.count--">
+		---
+	</button>
+	{{ $myPlugin.state.count }}
+</div>
+
+<script>
+    Vue.config.productionTip = false;
+
+    // Example code copied from Codepen.io
+    //  https://codepen.io/CodinCat/pen/GrmLmG?editors=1010
+
+    class MyPluginStore {
+        constructor(data = {}) {
+            this.storeVM = new Vue({data});
+        }
+
+        get state() {
+            return this.storeVM.$data;
+        }
+    }
+
+    const MyPlugin = {
+        Store: MyPluginStore,
+        install(Vue, options) {
+            Vue.mixin({
+                beforeCreate() {
+                    this.$myPlugin = options.store;
+                }
+            });
+        }
+    };
+
+    Vue.use(MyPlugin, {
+        store: new MyPlugin.Store({count: 0})
+    });
+
+    new Vue({
+        el: "#component1",
+        data: {},
+    });
+
+    new Vue({
+        el: "#component2",
+        data: {},
+    });
+</script>
+
+<style>
+
+</style>
+</body>
+</html>
